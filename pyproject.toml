@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "pjecz-prometeo"
+version = "0.1.0"
+description = "Entregar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI."
+authors = ["Guillermo Valdes <guillermo.valdes@pjecz.gob.mx>"]
+license = "AGPL3"
+readme = "README.md"
+packages = [{include = "pjecz_prometeo"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cryptography = "^41.0.1"
+fastapi = "^0.100.0"
+google-auth = "^2.21.0"
+google-cloud = "^0.34.0"
+google-cloud-secret-manager = "^2.16.2"
+gunicorn = "^20.1.0"
+psycopg2-binary = "^2.9.6"
+pydantic = "^2.0.2"
+python-dotenv = "^1.0.0"
+sqlalchemy = "^2.0.18"
+sqlalchemy-utils = "^0.41.1"
+uvicorn = "^0.22.0"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.17.4"
+pylint-sqlalchemy = "^0.2.0"
+black = "^23.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
