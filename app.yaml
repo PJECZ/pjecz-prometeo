@@ -1,0 +1,9 @@
+runtime: python311
+instance_class: F1
+service: prometeo
+entrypoint: gunicorn -w 2 -k uvicorn.workers.UvicornWorker prometeo.app:create_app
+env_variables:
+  PROJECT_ID: justicia-digital-gob-mx
+  SERVICE_PREFIX: pjecz_prometeo
+vpc_access_connector:
+  name: projects/justicia-digital-gob-mx/locations/us-west2/connectors/cupido
