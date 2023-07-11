@@ -1,10 +1,7 @@
 """
 Database
 """
-from typing import Annotated
-
-from fastapi import Depends
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -13,7 +10,7 @@ from config.settings import CurrentSettings
 Base = declarative_base()
 
 
-def get_engine(settings: CurrentSettings):
+def get_engine(settings: CurrentSettings) -> Engine:
     """Database engine"""
 
     # Create engine
@@ -22,7 +19,7 @@ def get_engine(settings: CurrentSettings):
     return engine
 
 
-def get_db(settings: CurrentSettings) -> Session:
+async def get_db(settings: CurrentSettings) -> Session:
     """Database session"""
 
     # Create engine
@@ -36,6 +33,3 @@ def get_db(settings: CurrentSettings) -> Session:
         yield db
     finally:
         db.close()
-
-
-# DatabaseSession = Annotated[Session, Depends(get_db)]
