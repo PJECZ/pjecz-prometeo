@@ -1,0 +1,18 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+
+### Bienvenida
+GET {{root}}
+
+### Distritos
+GET {{baseUrl}}/distritos
+X-Api-Key: {{api_key}}
+
+### Distrito Judicial de Saltillo
+GET {{baseUrl}}/distritos/DSLT
+X-Api-Key: {{api_key}}
+
+### Distrito Judicial de Torreon
+GET {{baseUrl}}/distritos/DTRC
+X-Api-Key: {{api_key}}

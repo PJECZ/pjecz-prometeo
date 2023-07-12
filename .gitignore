@@ -11,5 +11,5 @@
 *.egg-info/
 __pycache__/
 
-/poetry.lock
+/venv/
 /.venv/

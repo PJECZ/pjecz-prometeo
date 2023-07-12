@@ -1,6 +1,8 @@
 """
 Materias-Tipos de Juicios v3, esquemas de pydantic
 """
+from typing import List
+
 from pydantic import ConfigDict, BaseModel
 
 from lib.schemas_base import OneBaseOut
@@ -19,3 +21,19 @@ class MateriaTipoJuicioOut(BaseModel):
 
 class OneMateriaTipoJuicioOut(MateriaTipoJuicioOut, OneBaseOut):
     """Esquema para entregar un materia-tipo de juicio"""
+
+
+class ListMateriasTiposJuiciosResult(BaseModel):
+    """Esquema con el resultado de la lista de materias-tipos de juicios"""
+
+    total: int
+    items: List[MateriaTipoJuicioOut]
+    size: int
+
+
+class ListMateriasTiposJuiciosOut(BaseModel):
+    """Esquema para entregar el listado de materias-tipos de juicios"""
+
+    success: bool = True
+    message: str = "Success"
+    result: ListMateriasTiposJuiciosResult

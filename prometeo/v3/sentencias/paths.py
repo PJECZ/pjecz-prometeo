@@ -15,12 +15,12 @@ from .schemas import SentenciaOut
 sentencias = APIRouter(prefix="/v3/sentencias", tags=["sentencias"])
 
 
-@sentencias.get("/{sentencia_id}", response_model=SentenciaOut)
+@sentencias.get("/{sentencia_id}")
 async def detalle_sentencia(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     sentencia_id: int,
-):
+) -> SentenciaOut:
     """Detalle de una sentencia a partir de su id"""
     try:
         sentencia = get_sentencias(db, sentencia_id)

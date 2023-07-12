@@ -15,12 +15,12 @@ from .schemas import GlosaOut
 glosas = APIRouter(prefix="/v3/glosas", tags=["glosas"])
 
 
-@glosas.get("/{glosa_id}", response_model=GlosaOut)
+@glosas.get("/{glosa_id}")
 async def detalle_glosa(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     glosa_id: int,
-):
+) -> GlosaOut:
     """Detalle de una glosa a partir de su id"""
     try:
         glosa = get_glosas(db, glosa_id)

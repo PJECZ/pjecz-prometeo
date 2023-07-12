@@ -15,12 +15,12 @@ from .schemas import EdictoOut
 edictos = APIRouter(prefix="/v3/edictos", tags=["edictos"])
 
 
-@edictos.get("/{edicto_id}", response_model=EdictoOut)
+@edictos.get("/{edicto_id}")
 async def detalle_edicto(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     edicto_id: int,
-):
+) -> EdictoOut:
     """Detalle de un edicto a partir de su id"""
     try:
         edicto = get_edictos(db, edicto_id)

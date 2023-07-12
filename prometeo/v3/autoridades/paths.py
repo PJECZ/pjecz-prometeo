@@ -15,12 +15,12 @@ from .schemas import OneAutoridadOut
 autoridades = APIRouter(prefix="/v3/autoridades", tags=["autoridades"])
 
 
-@autoridades.get("/{autoridad_clave}", response_model=OneAutoridadOut)
+@autoridades.get("/{autoridad_clave}")
 async def detalle_autoridad(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     autoridad_clave: str,
-):
+) -> OneAutoridadOut:
     """Detalle de una autoridad a partir de su clave"""
     try:
         autoridad = get_autoridad_with_clave(db, autoridad_clave)

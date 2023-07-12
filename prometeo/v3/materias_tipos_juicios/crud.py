@@ -13,7 +13,7 @@ from ..materias.crud import get_materia, get_materia_with_clave
 
 def get_materias_tipos_juicios(
     db: Session,
-    materia_id: int = False,
+    materia_id: int = None,
     materia_clave: str = None,
 ) -> Any:
     """Consultar los materias-tipos de juicios activos"""

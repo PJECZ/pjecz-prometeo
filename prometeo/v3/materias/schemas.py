@@ -17,3 +17,19 @@ class MateriaOut(BaseModel):
 
 class OneMateriaOut(MateriaOut, OneBaseOut):
     """Esquema para entregar una materia"""
+
+
+class ListMateriasResult(BaseModel):
+    """Esquema con el resultado de la lista de materias"""
+
+    total: int
+    items: list[MateriaOut]
+    size: int
+
+
+class ListMateriasOut(BaseModel):
+    """Esquema para entregar el listado de materias"""
+
+    success: bool = True
+    message: str = "Success"
+    result: ListMateriasResult

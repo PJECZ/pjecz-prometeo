@@ -1,0 +1,10 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+
+### Bienvenida
+GET {{root}}
+
+### Listas de Acuerdos
+GET {{baseUrl}}/listas_de_acuerdos
+X-Api-Key: {{api_key}}
