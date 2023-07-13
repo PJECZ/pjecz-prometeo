@@ -1,0 +1,27 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+
+### Bienvenida
+GET {{root}}
+
+### Glosas
+GET {{baseUrl}}/glosas
+X-Api-Key: {{api_key}}
+
+### Glosas del Pleno del Tribunal Superior de Justicia
+GET {{baseUrl}}/glosas
+    ?autoridad_clave=PTSJ
+X-Api-Key: {{api_key}}
+
+### NO EXISTE Glosas del XXXX
+GET {{baseUrl}}/glosas
+    ?autoridad_clave=XXXX
+X-Api-Key: {{api_key}}
+
+### NO SE ENCONTRARON RESULTADOS Glosas del SLT-J1-FAM
+GET {{baseUrl}}/glosas
+    ?autoridad_clave=SLT-J1-FAM
+X-Api-Key: {{api_key}}
+
+

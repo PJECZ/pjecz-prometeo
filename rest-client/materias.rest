@@ -1,0 +1,28 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+
+### Bienvenida
+GET {{root}}
+
+### Materias
+GET {{baseUrl}}/materias
+X-Api-Key: {{api_key}}
+
+### Materia Civil
+GET {{baseUrl}}/materias/CIV
+X-Api-Key: {{api_key}}
+
+### Materia Familiar
+GET {{baseUrl}}/materias/FAM
+X-Api-Key: {{api_key}}
+
+### Tipos de Juicios
+GET {{baseUrl}}/materias_tipos_juicios
+    ?size=10
+X-Api-Key: {{api_key}}
+
+### Tipos de Juicios de la Materia Civil
+GET {{baseUrl}}/materias_tipos_juicios
+    ?materia_clave=CIV
+X-Api-Key: {{api_key}}

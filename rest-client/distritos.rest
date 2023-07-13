@@ -1,0 +1,23 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+
+### Bienvenida
+GET {{root}}
+
+### Distritos
+GET {{baseUrl}}/distritos
+    ?size=50
+X-Api-Key: {{api_key}}
+
+### Distrito Judicial de Saltillo
+GET {{baseUrl}}/distritos/DSLT
+X-Api-Key: {{api_key}}
+
+### Distrito Judicial de Torreon
+GET {{baseUrl}}/distritos/DTRC
+X-Api-Key: {{api_key}}
+
+### ERROR Distrito Judicial de Guadalajara
+GET {{baseUrl}}/distritos/DGDL
+X-Api-Key: {{api_key}}

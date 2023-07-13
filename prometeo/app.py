@@ -7,14 +7,14 @@ from fastapi_pagination import add_pagination
 
 from config.settings import get_settings
 
-from .v3.autoridades.paths import autoridades
-from .v3.distritos.paths import distritos
-from .v3.edictos.paths import edictos
-from .v3.glosas.paths import glosas
-from .v3.listas_de_acuerdos.paths import listas_de_acuerdos
-from .v3.materias.paths import materias
-from .v3.materias_tipos_juicios.paths import materias_tipos_juicios
-from .v3.sentencias.paths import sentencias
+from .v4.autoridades.paths import autoridades
+from .v4.distritos.paths import distritos
+from .v4.edictos.paths import edictos
+from .v4.glosas.paths import glosas
+from .v4.listas_de_acuerdos.paths import listas_de_acuerdos
+from .v4.materias.paths import materias
+from .v4.materias_tipos_juicios.paths import materias_tipos_juicios
+from .v4.sentencias.paths import sentencias
 
 
 def create_app() -> FastAPI:

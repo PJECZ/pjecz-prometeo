@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class OneBaseOut(BaseModel):
-    """BaseOut"""
+    """OneBaseOut"""
 
     success: bool = True
     message: str = "Success"

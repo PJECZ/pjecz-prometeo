@@ -1,0 +1,35 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+
+### Bienvenida
+GET {{root}}
+
+### Sentencias
+GET {{baseUrl}}/sentencias
+X-Api-Key: {{api_key}}
+
+### Sentencias del Distrito Judicial de la Region Carbonifera
+GET {{baseUrl}}/sentencias
+    ?distrito_clave=DSBN
+X-Api-Key: {{api_key}}
+
+### Sentencias del SLT-J2-CIV
+GET {{baseUrl}}/sentencias
+    ?autoridad_clave=SLT-J2-CIV
+X-Api-Key: {{api_key}}
+
+### Sentencias del 2023-07-10
+GET {{baseUrl}}/sentencias
+    ?fecha=2023-07-10
+X-Api-Key: {{api_key}}
+
+### ERROR Sentencias del SLT-J8-CIV
+GET {{baseUrl}}/sentencias
+    ?autoridad_clave=SLT-J8-CIV
+X-Api-Key: {{api_key}}
+
+### Una sentencia por su ID
+GET {{baseUrl}}/sentencias/86920
+X-Api-Key: {{api_key}}
+
