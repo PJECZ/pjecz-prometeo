@@ -34,15 +34,3 @@ class AutoridadOut(BaseModel):
 
 class OneAutoridadOut(AutoridadOut, OneBaseOut):
     """Esquema para entregar una autoridad"""
-
-
-class ListAutoridadesResult(ListBaseResult):
-    """Esquema con el resultado de la lista de autoridades"""
-
-    items: List[AutoridadOut]
-
-
-class ListAutoridadesOut(ListBaseOut):
-    """Esquema para entregar el listado de autoridades"""
-
-    result: ListAutoridadesResult

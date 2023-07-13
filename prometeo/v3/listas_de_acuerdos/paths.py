@@ -46,15 +46,15 @@ async def listado_listas_de_acuerdos(
     return paginate(query)
 
 
-@listas_de_acuerdos.get("/{lista_de_acuerdo_id}")
+@listas_de_acuerdos.get("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
 async def detalle_lista_de_acuerdo(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     lista_de_acuerdo_id: int,
-) -> OneListaDeAcuerdoOut:
+):
     """Detalle de una lista de acuerdo a partir de su id"""
     try:
         lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
     except MyAnyError as error:
-        return ListaDeAcuerdoOut(success=False, message=str(error))
-    return ListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
+        return OneListaDeAcuerdoOut(success=False, message=str(error))
+    return OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)

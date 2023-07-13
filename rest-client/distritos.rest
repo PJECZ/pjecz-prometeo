@@ -7,6 +7,7 @@ GET {{root}}
 
 ### Distritos
 GET {{baseUrl}}/distritos
+    ?size=50
 X-Api-Key: {{api_key}}
 
 ### Distrito Judicial de Saltillo

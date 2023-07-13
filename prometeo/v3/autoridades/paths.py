@@ -4,18 +4,20 @@ Autoridades v3, rutas (paths)
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.authentications import Usuario, get_current_user
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
+from lib.fastapi_pagination_custom_list import CustomList
 
 from .crud import get_autoridades, get_autoridad_with_clave
-from .schemas import OneAutoridadOut, ListAutoridadesResult, ListAutoridadesOut
+from .schemas import AutoridadOut, OneAutoridadOut
 
 autoridades = APIRouter(prefix="/v3/autoridades", tags=["autoridades"])
 
 
-@autoridades.get("")
+@autoridades.get("", response_model=CustomList[AutoridadOut])
 async def listado_autoridades(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
@@ -28,7 +30,7 @@ async def listado_autoridades(
     es_notaria: bool = None,
     materia_id: int = None,
     materia_clave: str = None,
-) -> ListAutoridadesOut:
+):
     """Listado de autoridades"""
     query = get_autoridades(
         db=db,
@@ -42,16 +44,15 @@ async def listado_autoridades(
         materia_id=materia_id,
         materia_clave=materia_clave,
     )
-    result = ListAutoridadesResult(total=query.count(), items=query.all(), size=query.count())
-    return ListAutoridadesOut(result=result)
+    return paginate(query)
 
 
-@autoridades.get("/{autoridad_clave}")
+@autoridades.get("/{autoridad_clave}", response_model=OneAutoridadOut)
 async def detalle_autoridad(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     autoridad_clave: str,
-) -> OneAutoridadOut:
+):
     """Detalle de una autoridad a partir de su clave"""
     try:
         autoridad = get_autoridad_with_clave(db, autoridad_clave)

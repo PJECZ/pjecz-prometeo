@@ -7,7 +7,7 @@ GET {{root}}
 
 ### Autoridades
 GET {{baseUrl}}/autoridades
-    ?size=50
+    ?size=20
 X-Api-Key: {{api_key}}
 
 ### Juzgados del Distrito Judicial de Torreon
@@ -22,6 +22,8 @@ GET {{baseUrl}}/autoridades
     ?distrito_clave=DSLT
     &es_jurisdiccional=true
     &es_notaria=true
+    &size=20
+    &page=4
 X-Api-Key: {{api_key}}
 
 ### Juzgado SLT-J1-FAM

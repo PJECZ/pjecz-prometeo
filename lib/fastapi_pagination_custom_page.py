@@ -55,8 +55,8 @@ class CustomPageParams(LimitOffsetParams):
     Custom Page Params
     """
 
-    offset: Optional[int] = Query(0, ge=0, description="Page offset")
-    limit: Optional[int] = Query(10, ge=1, le=20, description="Page size limit")
+    offset: int = Query(0, ge=0, description="Page offset")
+    limit: int = Query(10, ge=1, le=20, description="Page size limit")
 
 
 T = TypeVar("T")
@@ -70,7 +70,7 @@ class CustomPage(AbstractPage[T], Generic[T], ABC):
     success: bool
     message: str
 
-    total: Optional[GreaterEqualZero] = 0
+    total: Optional[GreaterEqualZero] = None
     items: Sequence[T] = []
     limit: Optional[GreaterEqualOne] = None
     offset: Optional[GreaterEqualZero] = None

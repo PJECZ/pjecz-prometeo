@@ -17,15 +17,3 @@ class MateriaOut(BaseModel):
 
 class OneMateriaOut(MateriaOut, OneBaseOut):
     """Esquema para entregar una materia"""
-
-
-class ListMateriasResult(ListBaseResult):
-    """Esquema con el resultado de la lista de materias"""
-
-    items: list[MateriaOut]
-
-
-class ListMateriasOut(ListBaseOut):
-    """Esquema para entregar el listado de materias"""
-
-    result: ListMateriasResult

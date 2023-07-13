@@ -23,15 +23,3 @@ class DistritoOut(BaseModel):
 
 class OneDistritoOut(DistritoOut, OneBaseOut):
     """Esquema para entregar un distrito"""
-
-
-class ListDistritosResult(ListBaseResult):
-    """Esquema con el resultado de la lista de distritos"""
-
-    items: List[DistritoOut]
-
-
-class ListDistritosOut(ListBaseOut):
-    """Esquema para entregar el listado de distritos"""
-
-    result: ListDistritosResult

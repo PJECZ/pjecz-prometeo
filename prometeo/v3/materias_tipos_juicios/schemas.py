@@ -21,15 +21,3 @@ class MateriaTipoJuicioOut(BaseModel):
 
 class OneMateriaTipoJuicioOut(MateriaTipoJuicioOut, OneBaseOut):
     """Esquema para entregar un materia-tipo de juicio"""
-
-
-class ListMateriasTiposJuiciosResult(ListBaseResult):
-    """Esquema con el resultado de la lista de materias-tipos de juicios"""
-
-    items: List[MateriaTipoJuicioOut]
-
-
-class ListMateriasTiposJuiciosOut(ListBaseOut):
-    """Esquema para entregar el listado de materias-tipos de juicios"""
-
-    result: ListMateriasTiposJuiciosResult
