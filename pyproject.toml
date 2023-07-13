@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pjecz-prometeo"
-version = "0.1.0"
+version = "1.0.0"
 description = "Entregar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI."
 authors = ["Guillermo Valdes <guillermo.valdes@pjecz.gob.mx>"]
 license = "AGPL3"
