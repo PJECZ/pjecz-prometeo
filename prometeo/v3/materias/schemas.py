@@ -3,7 +3,7 @@ Materias v3, esquemas de pydantic
 """
 from pydantic import ConfigDict, BaseModel
 
-from lib.schemas_base import OneBaseOut
+from lib.schemas_base import OneBaseOut, ListBaseResult, ListBaseOut
 
 
 class MateriaOut(BaseModel):
@@ -19,17 +19,13 @@ class OneMateriaOut(MateriaOut, OneBaseOut):
     """Esquema para entregar una materia"""
 
 
-class ListMateriasResult(BaseModel):
+class ListMateriasResult(ListBaseResult):
     """Esquema con el resultado de la lista de materias"""
 
-    total: int
     items: list[MateriaOut]
-    size: int
 
 
-class ListMateriasOut(BaseModel):
+class ListMateriasOut(ListBaseOut):
     """Esquema para entregar el listado de materias"""
 
-    success: bool = True
-    message: str = "Success"
     result: ListMateriasResult

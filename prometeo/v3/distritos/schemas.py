@@ -5,7 +5,7 @@ from typing import List
 
 from pydantic import ConfigDict, BaseModel
 
-from lib.schemas_base import OneBaseOut
+from lib.schemas_base import OneBaseOut, ListBaseResult, ListBaseOut
 
 
 class DistritoOut(BaseModel):
@@ -25,17 +25,13 @@ class OneDistritoOut(DistritoOut, OneBaseOut):
     """Esquema para entregar un distrito"""
 
 
-class ListDistritosResult(BaseModel):
+class ListDistritosResult(ListBaseResult):
     """Esquema con el resultado de la lista de distritos"""
 
-    total: int
     items: List[DistritoOut]
-    size: int
 
 
-class ListDistritosOut(BaseModel):
+class ListDistritosOut(ListBaseOut):
     """Esquema para entregar el listado de distritos"""
 
-    success: bool = True
-    message: str = "Success"
     result: ListDistritosResult

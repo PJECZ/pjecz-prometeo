@@ -5,7 +5,7 @@ from typing import List
 
 from pydantic import ConfigDict, BaseModel
 
-from lib.schemas_base import OneBaseOut
+from lib.schemas_base import OneBaseOut, ListBaseResult, ListBaseOut
 
 
 class MateriaTipoJuicioOut(BaseModel):
@@ -23,17 +23,13 @@ class OneMateriaTipoJuicioOut(MateriaTipoJuicioOut, OneBaseOut):
     """Esquema para entregar un materia-tipo de juicio"""
 
 
-class ListMateriasTiposJuiciosResult(BaseModel):
+class ListMateriasTiposJuiciosResult(ListBaseResult):
     """Esquema con el resultado de la lista de materias-tipos de juicios"""
 
-    total: int
     items: List[MateriaTipoJuicioOut]
-    size: int
 
 
-class ListMateriasTiposJuiciosOut(BaseModel):
+class ListMateriasTiposJuiciosOut(ListBaseOut):
     """Esquema para entregar el listado de materias-tipos de juicios"""
 
-    success: bool = True
-    message: str = "Success"
     result: ListMateriasTiposJuiciosResult

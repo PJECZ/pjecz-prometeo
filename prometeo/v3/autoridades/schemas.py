@@ -1,9 +1,11 @@
 """
 Autoridades v3, esquemas de pydantic
 """
+from typing import List
+
 from pydantic import ConfigDict, BaseModel
 
-from lib.schemas_base import OneBaseOut
+from lib.schemas_base import OneBaseOut, ListBaseResult, ListBaseOut
 
 
 class AutoridadOut(BaseModel):
@@ -32,3 +34,15 @@ class AutoridadOut(BaseModel):
 
 class OneAutoridadOut(AutoridadOut, OneBaseOut):
     """Esquema para entregar una autoridad"""
+
+
+class ListAutoridadesResult(ListBaseResult):
+    """Esquema con el resultado de la lista de autoridades"""
+
+    items: List[AutoridadOut]
+
+
+class ListAutoridadesOut(ListBaseOut):
+    """Esquema para entregar el listado de autoridades"""
+
+    result: ListAutoridadesResult
