@@ -6,5 +6,9 @@
 GET {{root}}
 
 ### Listas de Acuerdos
-GET {{baseUrl}}/listas_de_acuerdos
+GET {{baseUrl}}/listas_de_acuerdos/pages
+X-Api-Key: {{api_key}}
+
+### Listas de Acuerdos
+GET {{baseUrl}}/listas_de_acuerdos/limit-offset
 X-Api-Key: {{api_key}}

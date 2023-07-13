@@ -7,59 +7,63 @@ from fastapi import Query
 from pydantic import BaseModel
 from typing_extensions import Self
 
-from fastapi_pagination.bases import AbstractPage, AbstractParams, RawParams
-from fastapi_pagination.limit_offset import LimitOffsetPage
+from fastapi_pagination.bases import AbstractPage, AbstractParams, BasePage, RawParams
+from fastapi_pagination.limit_offset import LimitOffsetPage, LimitOffsetParams
+from fastapi_pagination.types import GreaterEqualOne, GreaterEqualZero
 
 
-class CustomLimitOffsetPage(LimitOffsetPage):
-    """Create pagination params"""
+class CustomPageParams(LimitOffsetParams):
+    """
+    Custom Page Params
+    """
 
-    limit: int = Query(10, ge=1, le=10)
-    offset: int = Query(0, ge=0)
+    offset: Optional[int] = Query(0, ge=0, description="Page offset")
+    limit: Optional[int] = Query(10, ge=1, le=20, description="Page size limit")
 
-    def to_raw_params(self) -> RawParams:
-        """Convert to raw params"""
-        return RawParams(limit=self.limit, offset=self.offset)
+
+class CustomPageResult(BaseModel):
+    """
+    Custom Page Meta
+    """
+
+    total: int
+    offset: int
+    limit: int
 
 
 T = TypeVar("T")
 
 
-class CustomPageResult(BaseModel, Generic[T]):
-    """Custom page result"""
+class CustomPage(BasePage[T], Generic[T]):
+    """
+    Custom Page
+    """
 
-    items: Sequence[T]
-    limit: int
-    offset: int
-    total: int
+    success: bool = True
+    message: str = "Success"
 
+    limit: Optional[GreaterEqualOne]
+    offset: Optional[GreaterEqualZero]
 
-class CustomPage(AbstractPage[T], Generic[T]):
-    """Custom page"""
-
-    message: str
-    result: CustomPageResult[T]
-    success: bool
-
-    __params_type__ = CustomLimitOffsetPage
+    __params_type__ = CustomPageParams
 
     @classmethod
     def create(
         cls,
         items: Sequence[T],
-        total: int,
         params: AbstractParams,
-    ) -> Self:
-        """Create custom page"""
-        assert isinstance(params, CustomLimitOffsetPage)
-        assert total is not None
+        *,
+        total: Optional[int] = None,
+        **kwargs: Any,
+    ) -> LimitOffsetPage[T]:
+        raw_params = params.to_raw_params().as_limit_offset()
+
         return cls(
-            message="Success",
-            result=CustomPageResult(
-                items=items,
-                limit=params.limit,
-                offset=params.offset,
-                total=total,
-            ),
             success=True,
+            message="Success",
+            total=total,
+            items=items,
+            limit=raw_params.limit,
+            offset=raw_params.offset,
+            **kwargs,
         )
