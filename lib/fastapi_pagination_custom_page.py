@@ -28,12 +28,13 @@ class CustomPageResult(BaseModel):
     Custom Page Result
     """
 
-    total: Optional[int] = None
-    limit: Optional[GreaterEqualOne]
-    offset: Optional[GreaterEqualZero]
+    # items: Sequence[T]
+    total: GreaterEqualZero
+    limit: Optional[GreaterEqualOne] = None
+    offset: Optional[GreaterEqualZero] = None
 
 
-class CustomPage(BasePage[T], Generic[T]):
+class CustomPage(AbstractPage[T], Generic[T]):
     """
     Custom Page
     """
@@ -42,6 +43,8 @@ class CustomPage(BasePage[T], Generic[T]):
     message: str = "Success"
     result: CustomPageResult
 
+    items: Sequence[T]
+
     __params_type__ = CustomPageParams
 
     @classmethod
@@ -49,7 +52,6 @@ class CustomPage(BasePage[T], Generic[T]):
         cls,
         items: Sequence[T],
         params: AbstractParams,
-        *,
         total: Optional[int] = None,
         **kwargs: Any,
     ) -> LimitOffsetPage[T]:
@@ -63,7 +65,6 @@ class CustomPage(BasePage[T], Generic[T]):
                 offset=raw_params.offset,
                 limit=raw_params.limit,
             ),
-            total=total,
             items=items,
             **kwargs,
         )
