@@ -1,11 +1,10 @@
 """
 FastAPI Pagination Custom Page
 """
-from typing import Any, Generic, Optional, Sequence, TypeVar
+from typing import Any, Generic, List, Optional, Sequence, TypeVar
 
 from fastapi import Query
 from pydantic import BaseModel
-from typing_extensions import Self
 
 from fastapi_pagination.bases import AbstractPage, AbstractParams, BasePage, RawParams
 from fastapi_pagination.limit_offset import LimitOffsetPage, LimitOffsetParams
@@ -21,17 +20,17 @@ class CustomPageParams(LimitOffsetParams):
     limit: Optional[int] = Query(10, ge=1, le=20, description="Page size limit")
 
 
+T = TypeVar("T")
+
+
 class CustomPageResult(BaseModel):
     """
-    Custom Page Meta
+    Custom Page Result
     """
 
     total: int
-    offset: int
-    limit: int
-
-
-T = TypeVar("T")
+    limit: Optional[GreaterEqualOne]
+    offset: Optional[GreaterEqualZero]
 
 
 class CustomPage(BasePage[T], Generic[T]):
@@ -41,9 +40,7 @@ class CustomPage(BasePage[T], Generic[T]):
 
     success: bool = True
     message: str = "Success"
-
-    limit: Optional[GreaterEqualOne]
-    offset: Optional[GreaterEqualZero]
+    result: CustomPageResult
 
     __params_type__ = CustomPageParams
 
@@ -61,9 +58,12 @@ class CustomPage(BasePage[T], Generic[T]):
         return cls(
             success=True,
             message="Success",
+            result=CustomPageResult(
+                total=total,
+                offset=raw_params.offset,
+                limit=raw_params.limit,
+            ),
             total=total,
             items=items,
-            limit=raw_params.limit,
-            offset=raw_params.offset,
             **kwargs,
         )
