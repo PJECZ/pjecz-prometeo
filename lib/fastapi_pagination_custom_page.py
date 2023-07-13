@@ -28,7 +28,7 @@ class CustomPageResult(BaseModel):
     Custom Page Result
     """
 
-    total: int
+    total: Optional[int] = None
     limit: Optional[GreaterEqualOne]
     offset: Optional[GreaterEqualZero]
 
