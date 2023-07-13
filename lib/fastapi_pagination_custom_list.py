@@ -31,7 +31,7 @@ Usage:
     from .crud import get_examples
     from .schemas import AutoridadOut
 
-    examples = APIRouter(prefix="/v3/examples")
+    examples = APIRouter(prefix="/v4/examples")
 
     @examples.get("", response_model=CustomList[AutoridadOut])
     async def list_examples(

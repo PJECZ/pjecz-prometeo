@@ -9,6 +9,6 @@ load_dotenv()
 
 config = {
     "api_key": os.getenv("API_KEY", ""),
-    "host": os.getenv("HOST", "http://127.0.0.1:8001"),
-    "timeout": int(os.getenv("TIMEOUT", "2")),
+    "host": os.getenv("HOST", "http://127.0.0.1:8004"),
+    "timeout": int(os.getenv("TIMEOUT", "12")),
 }
