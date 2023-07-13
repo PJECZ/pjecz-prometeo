@@ -57,7 +57,7 @@ def get_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerd
     """Consultar una lista de acuerdo por su id"""
     lista_de_acuerdo = db.query(ListaDeAcuerdo).get(lista_de_acuerdo_id)
     if lista_de_acuerdo is None:
-        raise MyNotExistsError("No existe ese lista de acuerdo")
+        raise MyNotExistsError("No existe esa lista de acuerdo")
     if lista_de_acuerdo.estatus != "A":
-        raise MyIsDeletedError("No es activo ese lista de acuerdo, está eliminado")
+        raise MyIsDeletedError("No es activo esa lista de acuerdo, está eliminado")
     return lista_de_acuerdo
