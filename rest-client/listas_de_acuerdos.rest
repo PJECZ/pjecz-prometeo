@@ -13,3 +13,8 @@ X-Api-Key: {{api_key}}
 GET {{baseUrl}}/listas_de_acuerdos
     ?distrito_clave=DTRC
 X-Api-Key: {{api_key}}
+
+### Listas de Acuerdos del SLT-J2-CIV
+GET {{baseUrl}}/listas_de_acuerdos
+    ?autoridad_clave=SLT-J2-CIV
+X-Api-Key: {{api_key}}

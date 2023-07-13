@@ -5,7 +5,7 @@ from typing import List
 
 from pydantic import ConfigDict, BaseModel
 
-from lib.schemas_base import OneBaseOut, ListBaseResult, ListBaseOut
+from lib.schemas_base import OneBaseOut
 
 
 class MateriaTipoJuicioOut(BaseModel):

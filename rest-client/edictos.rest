@@ -1,0 +1,20 @@
+@api_key = {{$dotenv API_KEY}}
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v3
+
+### Bienvenida
+GET {{root}}
+
+### Edictos
+GET {{baseUrl}}/edictos
+X-Api-Key: {{api_key}}
+
+### Edictos del Distrito Judicial de Rio Grande
+GET {{baseUrl}}/edictos
+    ?distrito_clave=DRGR
+X-Api-Key: {{api_key}}
+
+### Edictos de la Notaria 12 de Saltillo
+GET {{baseUrl}}/edictos
+    ?autoridad_clave=SLT-NOT-012
+X-Api-Key: {{api_key}}

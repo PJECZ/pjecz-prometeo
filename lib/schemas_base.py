@@ -9,14 +9,3 @@ class OneBaseOut(BaseModel):
 
     success: bool = True
     message: str = "Success"
-
-
-class ListBaseResult(BaseModel):
-    """ListBaseResult"""
-
-    total: int
-    size: int
-
-
-class ListBaseOut(OneBaseOut):
-    """ListBaseOut"""

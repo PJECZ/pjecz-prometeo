@@ -25,11 +25,14 @@ async def listado_materias_tipos_juicios(
     materia_clave: str = None,
 ):
     """Listado de materias-tipos de juicios"""
-    query = get_materias_tipos_juicios(
-        db=db,
-        materia_id=materia_id,
-        materia_clave=materia_clave,
-    )
+    try:
+        query = get_materias_tipos_juicios(
+            db=db,
+            materia_id=materia_id,
+            materia_clave=materia_clave,
+        )
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
     return paginate(query)
 
 

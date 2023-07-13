@@ -1,9 +1,9 @@
 """
 FastAPI Pagination Custom Page
 
-Provides a custom pagination class to be used with FastAPI 0.100.0 and Pydantic 2.0.2
+Provides a custom pagination class to be used with FastAPI 0.100.0, Pydantic 2.0.2 and SQLAlchemy.
 
-This is an example of the output JSON:
+Example of the output JSON:
 
     {
       "success": true,
@@ -56,7 +56,7 @@ class CustomPageParams(LimitOffsetParams):
     """
 
     offset: int = Query(0, ge=0, description="Page offset")
-    limit: int = Query(10, ge=1, le=20, description="Page size limit")
+    limit: int = Query(10, ge=1, le=10, description="Page size limit")
 
 
 T = TypeVar("T")
@@ -90,9 +90,9 @@ class CustomPage(AbstractPage[T], Generic[T], ABC):
         """
         raw_params = params.to_raw_params().as_limit_offset()
 
-        if total is None or total < 0:
+        if total is None or total == 0:
             return cls(
-                success=False,
+                success=True,
                 message="No se encontraron registros",
             )
 

@@ -32,17 +32,20 @@ async def listado_listas_de_acuerdos(
     fecha_hasta: date = None,
 ):
     """Listado de listas de acuerdos"""
-    query = get_listas_de_acuerdos(
-        db=db,
-        anio=anio,
-        autoridad_id=autoridad_id,
-        autoridad_clave=autoridad_clave,
-        distrito_id=distrito_id,
-        distrito_clave=distrito_clave,
-        fecha=fecha,
-        fecha_desde=fecha_desde,
-        fecha_hasta=fecha_hasta,
-    )
+    try:
+        query = get_listas_de_acuerdos(
+            db=db,
+            anio=anio,
+            autoridad_id=autoridad_id,
+            autoridad_clave=autoridad_clave,
+            distrito_id=distrito_id,
+            distrito_clave=distrito_clave,
+            fecha=fecha,
+            fecha_desde=fecha_desde,
+            fecha_hasta=fecha_hasta,
+        )
+    except MyAnyError as error:
+        return CustomPage(success=False, message=str(error))
     return paginate(query)
 
 

@@ -32,18 +32,21 @@ async def listado_autoridades(
     materia_clave: str = None,
 ):
     """Listado de autoridades"""
-    query = get_autoridades(
-        db=db,
-        distrito_id=distrito_id,
-        distrito_clave=distrito_clave,
-        es_cemasc=es_cemasc,
-        es_creador_glosas=es_creador_glosas,
-        es_defensoria=es_defensoria,
-        es_jurisdiccional=es_jurisdiccional,
-        es_notaria=es_notaria,
-        materia_id=materia_id,
-        materia_clave=materia_clave,
-    )
+    try:
+        query = get_autoridades(
+            db=db,
+            distrito_id=distrito_id,
+            distrito_clave=distrito_clave,
+            es_cemasc=es_cemasc,
+            es_creador_glosas=es_creador_glosas,
+            es_defensoria=es_defensoria,
+            es_jurisdiccional=es_jurisdiccional,
+            es_notaria=es_notaria,
+            materia_id=materia_id,
+            materia_clave=materia_clave,
+        )
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
     return paginate(query)
 
 

@@ -3,7 +3,7 @@ Materias v3, esquemas de pydantic
 """
 from pydantic import ConfigDict, BaseModel
 
-from lib.schemas_base import OneBaseOut, ListBaseResult, ListBaseOut
+from lib.schemas_base import OneBaseOut
 
 
 class MateriaOut(BaseModel):

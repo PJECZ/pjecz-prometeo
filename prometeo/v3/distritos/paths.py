@@ -26,12 +26,15 @@ async def listado_distritos(
     es_jurisdiccional: bool = None,
 ):
     """Listado de distritos"""
-    query = get_distritos(
-        db=db,
-        es_distrito_judicial=es_distrito_judicial,
-        es_distrito=es_distrito,
-        es_jurisdiccional=es_jurisdiccional,
-    )
+    try:
+        query = get_distritos(
+            db=db,
+            es_distrito_judicial=es_distrito_judicial,
+            es_distrito=es_distrito,
+            es_jurisdiccional=es_jurisdiccional,
+        )
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
     return paginate(query)
 
 

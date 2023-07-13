@@ -17,3 +17,7 @@ X-Api-Key: {{api_key}}
 ### Distrito Judicial de Torreon
 GET {{baseUrl}}/distritos/DTRC
 X-Api-Key: {{api_key}}
+
+### ERROR Distrito Judicial de Guadalajara
+GET {{baseUrl}}/distritos/DGDL
+X-Api-Key: {{api_key}}

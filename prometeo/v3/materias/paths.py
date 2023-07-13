@@ -23,7 +23,10 @@ async def listado_materias(
     current_user: Annotated[Usuario, Depends(get_current_user)],
 ):
     """Listado de materias"""
-    query = get_materias(db)
+    try:
+        query = get_materias(db)
+    except MyAnyError as error:
+        return CustomList(success=False, message=str(error))
     return paginate(query)
 
 

@@ -15,6 +15,15 @@ GET {{baseUrl}}/autoridades
     ?distrito_clave=DTRC
     &es_jurisdiccional=true
     &es_notaria=false
+    &size=20
+X-Api-Key: {{api_key}}
+
+### ERROR Juzgados del Distrito Judicial de Monterrey
+GET {{baseUrl}}/autoridades
+    ?distrito_clave=DMTY
+    &es_jurisdiccional=true
+    &es_notaria=false
+    &size=20
 X-Api-Key: {{api_key}}
 
 ### Notarias del Distrito Judicial de Saltillo
