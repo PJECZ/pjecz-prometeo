@@ -6,9 +6,10 @@
 GET {{root}}
 
 ### Listas de Acuerdos
-GET {{baseUrl}}/listas_de_acuerdos/pages
+GET {{baseUrl}}/listas_de_acuerdos
 X-Api-Key: {{api_key}}
 
-### Listas de Acuerdos
-GET {{baseUrl}}/listas_de_acuerdos/limit-offset
+### Listas de Acuerdos del Distrito Judicial de Torreon
+GET {{baseUrl}}/listas_de_acuerdos
+    ?distrito_clave=DTRC
 X-Api-Key: {{api_key}}

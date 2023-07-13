@@ -5,8 +5,6 @@ from datetime import date
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-
-from fastapi_pagination import LimitOffsetPage, Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from lib.authentications import Usuario, get_current_user
@@ -20,8 +18,7 @@ from .schemas import ListaDeAcuerdoOut, OneListaDeAcuerdoOut
 listas_de_acuerdos = APIRouter(prefix="/v3/listas_de_acuerdos", tags=["listas de acuerdos"])
 
 
-@listas_de_acuerdos.get("/pages", response_model=CustomPage[ListaDeAcuerdoOut])
-@listas_de_acuerdos.get("/limit-offset", response_model=LimitOffsetPage[ListaDeAcuerdoOut])
+@listas_de_acuerdos.get("", response_model=CustomPage[ListaDeAcuerdoOut])
 async def listado_listas_de_acuerdos(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
