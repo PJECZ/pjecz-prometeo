@@ -16,6 +16,7 @@ con las siguientes variables:
 - DB_PASS
 - FERNET_KEY
 - ORIGINS
+- RECAPTCHA_SITE_KEY
 - USERNAME
 
 Para producción vaya a Google Secret Manager en
@@ -29,6 +30,7 @@ y cree como secretos las siguientes variable de entorno
 - pjecz_prometeo_db_user
 - pjecz_prometeo_fernet_key
 - pjecz_prometeo_origins
+- pjecz_prometeo_recaptcha_site_key
 - pjecz_prometeo_username
 
 Y en el archivo app.yaml agregue las siguientes variables de entorno
@@ -79,6 +81,7 @@ class Settings(BaseSettings):
     db_user: str = get_secret("db_user")
     fernet_key: str = get_secret("fernet_key")
     origins: str = get_secret("origins")
+    recaptcha_site_key: str = get_secret("recaptcha_site_key")
     tz: str = "America/Mexico_City"
     username: str = get_secret("username")
 

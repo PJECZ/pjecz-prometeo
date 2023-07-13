@@ -493,6 +493,23 @@ files = [
 ]
 
 [[package]]
+name = "google-cloud-recaptcha-enterprise"
+version = "1.12.1"
+description = "Google Cloud Recaptcha Enterprise API client library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "google-cloud-recaptcha-enterprise-1.12.1.tar.gz", hash = "sha256:c903d8dd85db32ba87d9348eed592e8ab1e3b8cd6636e2f427c79332a9d2278f"},
+    {file = "google_cloud_recaptcha_enterprise-1.12.1-py2.py3-none-any.whl", hash = "sha256:4c6088cfbefb3dd7a18ec3da6816891e20025859bd48c18fd4221f0da615f06e"},
+]
+
+[package.dependencies]
+google-api-core = {version = ">=1.34.0,<2.0.0 || >=2.11.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = {version = ">=1.22.2,<2.0.0dev", markers = "python_version >= \"3.11\""}
+protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
+
+[[package]]
 name = "google-cloud-secret-manager"
 version = "2.16.2"
 description = "Google Cloud Secret Manager API client library"
@@ -1635,4 +1652,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d54b26730ac8c23ca9afbdd50eb8728fe2a585cce0727d06e20435a4c7be659b"
+content-hash = "e18d111aee1f4d17fd9b045027cec7d83fd669c26017c912b1236cf70e4bef3e"
