@@ -6,6 +6,7 @@ from typing import Any, Generic, List, Optional, Sequence, TypeVar
 from fastapi import Query
 from pydantic import BaseModel
 
+from abc import ABC
 from fastapi_pagination.bases import AbstractPage, AbstractParams, BasePage, RawParams
 from fastapi_pagination.limit_offset import LimitOffsetPage, LimitOffsetParams
 from fastapi_pagination.types import GreaterEqualOne, GreaterEqualZero
@@ -28,13 +29,12 @@ class CustomPageResult(BaseModel):
     Custom Page Result
     """
 
-    # items: Sequence[T]
-    total: GreaterEqualZero
+    total: Optional[GreaterEqualZero] = 0
     limit: Optional[GreaterEqualOne] = None
     offset: Optional[GreaterEqualZero] = None
 
 
-class CustomPage(AbstractPage[T], Generic[T]):
+class CustomPage(AbstractPage[T], Generic[T], ABC):
     """
     Custom Page
     """
@@ -43,7 +43,7 @@ class CustomPage(AbstractPage[T], Generic[T]):
     message: str = "Success"
     result: CustomPageResult
 
-    items: Sequence[T]
+    data: Sequence[T]
 
     __params_type__ = CustomPageParams
 
@@ -65,6 +65,6 @@ class CustomPage(AbstractPage[T], Generic[T]):
                 offset=raw_params.offset,
                 limit=raw_params.limit,
             ),
-            items=items,
+            data=items,
             **kwargs,
         )
