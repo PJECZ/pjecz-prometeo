@@ -115,4 +115,4 @@ def get_settings() -> Settings:
     return Settings()
 
 
-CurrentSettings = Annotated[Settings, Depends(get_settings)]
+# CurrentSettings = Annotated[Settings, Depends(get_settings)]

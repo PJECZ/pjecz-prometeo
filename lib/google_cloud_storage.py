@@ -3,9 +3,11 @@ Google Cloud Storage
 
 Functions to get and upload files from Google Cloud Storage.
 
+For develpment you need the environment variable GOOGLE_APPLICATION_CREDENTIALS
+
 """
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 from google.cloud import storage
 from google.cloud.exceptions import NotFound
@@ -64,12 +66,13 @@ def get_blob_name_from_url(url: str) -> str:
 
     # Get blob name
     try:
-        blob_name = parsed_url.path[1:]
+        blob_name_complete = parsed_url.path[1:]  # Extract the path and remove the first slash
+        blob_name = "/".join(blob_name_complete.split("/")[1:])  # Remove the first directory from the path, because it is the bucket name
     except IndexError as error:
         raise MyNotValidParamError("Not valid URL") from error
 
-    # Return blob name
-    return blob_name
+    # Returno blob name unquoted
+    return unquote(blob_name)
 
 
 def get_file_from_gcs(
@@ -88,8 +91,8 @@ def get_file_from_gcs(
     storage_client = storage.Client()
     try:
         bucket = storage_client.get_bucket(bucket_name)
-    except NotFound:
-        raise MyBucketNotFoundError("Bucket not found")
+    except NotFound as error:
+        raise MyBucketNotFoundError("Bucket not found") from error
 
     # Get file
     blob = bucket.get_blob(blob_name)
@@ -124,8 +127,8 @@ def upload_file_to_gcs(
     storage_client = storage.Client()
     try:
         bucket = storage_client.get_bucket(bucket_name)
-    except NotFound:
-        raise MyBucketNotFoundError("Bucket not found")
+    except NotFound as error:
+        raise MyBucketNotFoundError("Bucket not found") from error
 
     # Create blob
     blob = bucket.blob(blob_name)

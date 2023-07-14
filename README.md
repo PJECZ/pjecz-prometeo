@@ -109,6 +109,10 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
     fi
     echo
 
+    echo "-- Google Cloud"
+    echo "   GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}"
+    echo
+
     if [ -f .env ]
     then
         export $(grep -v '^#' .env | xargs)
