@@ -78,6 +78,13 @@ Verifique que este en True
     # Fernet key para cifrar y descifrar la API_KEY
     FERNET_KEY="XXXXXXXXXXXXXXXX"
 
+    # Google Cloud Storage buckets
+    GCP_BUCKET=pjecz-consultas
+    GCP_BUCKET_EDICTOS=pjecz-consultas-edictos
+    GCP_BUCKET_GLOSAS=pjecz-consultas-glosas
+    GCP_BUCKET_LISTAS_DE_ACUERDOS=pjecz-consultas-listas-de-acuerdos
+    GCP_BUCKET_SENTENCIAS=pjecz-consultas-version-publica-sentencias
+
     # CORS origins
     ORIGINS=http://localhost:3000,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:5000
 
@@ -102,6 +109,10 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
     fi
     echo
 
+    echo "-- Google Cloud"
+    echo "   GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}"
+    echo
+
     if [ -f .env ]
     then
         export $(grep -v '^#' .env | xargs)
@@ -111,8 +122,16 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo "   DB_NAME: ${DB_NAME}"
         echo "   DB_USER: ${DB_USER}"
         echo "   DB_PASS: ${DB_PASS}"
+        echo "   FERNET_KEY: ${FERNET_KEY}"
+        echo "   GCP_BUCKET: ${GCP_BUCKET}"
+        echo "   GCP_BUCKET_EDICTOS: ${GCP_BUCKET_EDICTOS}"
+        echo "   GCP_BUCKET_GLOSAS: ${GCP_BUCKET_GLOSAS}"
+        echo "   GCP_BUCKET_LISTAS_DE_ACUERDOS: ${GCP_BUCKET_LISTAS_DE_ACUERDOS}"
+        echo "   GCP_BUCKET_SENTENCIAS: ${GCP_BUCKET_SENTENCIAS}"
         echo "   ORIGINS: ${ORIGINS}"
         echo "   TZ: ${TZ}"
+        echo "   USERNAME: ${USERNAME}"
+        echo
         echo
         export PGHOST=$DB_HOST
         export PGPORT=$DB_PORT

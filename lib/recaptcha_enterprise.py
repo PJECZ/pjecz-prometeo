@@ -9,15 +9,17 @@ Usage:
         # Your code here
 
 """
-from fastapi import HTTPException
+from typing import Annotated
+
+from fastapi import Depends, HTTPException
 from google.cloud import recaptchaenterprise_v1
 from google.cloud.recaptchaenterprise_v1 import Assessment
 
-from config.settings import PROJECT_ID, CurrentSettings
+from config.settings import PROJECT_ID, Settings, get_settings
 
 
 async def create_assessment(
-    settings: CurrentSettings,
+    settings: Annotated[Settings, Depends(get_settings)],
     token: str,
 ) -> Assessment:
     """Create an assessment to analyze the risk of a request."""

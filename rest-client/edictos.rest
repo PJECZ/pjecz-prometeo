@@ -16,5 +16,9 @@ X-Api-Key: {{api_key}}
 
 ### Edictos de la Notaria 12 de Saltillo
 GET {{baseUrl}}/edictos
-    ?autoridad_clave=SLT-NOT-012
+    ?autoridad_clave=SLT-N012
+X-Api-Key: {{api_key}}
+
+### Un edicto con id 66496
+GET {{baseUrl}}/edictos/66496
 X-Api-Key: {{api_key}}
