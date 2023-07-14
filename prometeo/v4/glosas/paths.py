@@ -14,6 +14,7 @@ from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 from lib.google_cloud_storage import get_blob_name_from_url, get_file_from_gcs, get_media_type_from_filename
+from lib.recaptcha_enterprise import create_assessment
 
 from .crud import get_glosa, get_glosas
 from .schemas import GlosaOut, OneGlosaOut
@@ -30,6 +31,32 @@ async def descargar_glosa(
     glosa_id: int,
 ):
     """Descargar de una glosa a partir de su id"""
+    try:
+        glosa = get_glosa(db, glosa_id)
+        archivo_contenido = get_file_from_gcs(
+            bucket_name=settings.gcp_bucket_glosas,
+            blob_name=get_blob_name_from_url(glosa.url),
+        )
+        archivo_media_type = get_media_type_from_filename(glosa.archivo)
+    except MyAnyError as error:
+        return OneGlosaOut(success=False, message=str(error))
+    buffer = BytesIO(archivo_contenido)
+    background_tasks.add_task(buffer.close)
+    headers = {"Content-Disposition": f'inline; filename="{glosa.archivo}"'}
+    return Response(buffer.getvalue(), headers=headers, media_type=archivo_media_type)
+
+
+@glosas.get("/recaptcha/{glosa_id}")
+async def descargar_recaptcha_glosa(
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[Usuario, Depends(get_current_user)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    background_tasks: BackgroundTasks,
+    glosa_id: int,
+    token: str,
+):
+    """Descargar de una glosa a partir de su id, validando reCAPTCHA"""
+    await create_assessment(settings=settings, token=token)
     try:
         glosa = get_glosa(db, glosa_id)
         archivo_contenido = get_file_from_gcs(

@@ -14,6 +14,7 @@ from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 from lib.google_cloud_storage import get_blob_name_from_url, get_file_from_gcs, get_media_type_from_filename
+from lib.recaptcha_enterprise import create_assessment
 
 from .crud import get_edictos, get_edicto
 from .schemas import EdictoOut, OneEdictoOut
@@ -30,6 +31,32 @@ async def descargar_edicto(
     edicto_id: int,
 ):
     """Descargar de un edicto a partir de su id"""
+    try:
+        edicto = get_edicto(db, edicto_id)
+        archivo_contenido = get_file_from_gcs(
+            bucket_name=settings.gcp_bucket_edictos,
+            blob_name=get_blob_name_from_url(edicto.url),
+        )
+        archivo_media_type = get_media_type_from_filename(edicto.archivo)
+    except MyAnyError as error:
+        return OneEdictoOut(success=False, message=str(error))
+    buffer = BytesIO(archivo_contenido)
+    background_tasks.add_task(buffer.close)
+    headers = {"Content-Disposition": f'inline; filename="{edicto.archivo}"'}
+    return Response(buffer.getvalue(), headers=headers, media_type=archivo_media_type)
+
+
+@edictos.get("/recaptcha/{edicto_id}")
+async def descargar_recaptcha_edicto(
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[Usuario, Depends(get_current_user)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    background_tasks: BackgroundTasks,
+    edicto_id: int,
+    token: str,
+):
+    """Descargar de un edicto a partir de su id, validando reCAPTCHA"""
+    await create_assessment(settings=settings, token=token)
     try:
         edicto = get_edicto(db, edicto_id)
         archivo_contenido = get_file_from_gcs(
