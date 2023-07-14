@@ -23,6 +23,10 @@ class MyEmptyError(MyAnyError):
     """Excepción porque no hay resultados"""
 
 
+class MyFileNotFound(MyAnyError):
+    """Excepción porque no se encontró el archivo"""
+
+
 class MyIsDeletedError(MyAnyError):
     """Excepción porque esta eliminado"""
 
