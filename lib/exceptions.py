@@ -15,6 +15,10 @@ class MyAuthenticationError(MyAnyError):
     """Excepción porque fallo la autentificacion"""
 
 
+class MyBucketNotFoundError(MyAnyError):
+    """Excepción porque no se encontró el bucket"""
+
+
 class MyConnectionError(MyAnyError):
     """Excepción porque no se pudo conectar"""
 
@@ -23,7 +27,11 @@ class MyEmptyError(MyAnyError):
     """Excepción porque no hay resultados"""
 
 
-class MyFileNotFound(MyAnyError):
+class MyFileNotAllowedError(MyAnyError):
+    """Excepción porque no se permite el tipo del archivo"""
+
+
+class MyFileNotFoundError(MyAnyError):
     """Excepción porque no se encontró el archivo"""
 
 
@@ -61,3 +69,7 @@ class MyTimeoutError(MyAnyError):
 
 class MyUnknownError(MyAnyError):
     """Excepción porque hubo un error desconocido"""
+
+
+class MyUploadError(MyAnyError):
+    """Excepción porque falló la subida"""

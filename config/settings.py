@@ -15,6 +15,11 @@ con las siguientes variables:
 - DB_USER
 - DB_PASS
 - FERNET_KEY
+- GCP_BUCKET
+- GCP_BUCKET_EDICTOS
+- GCP_BUCKET_GLOSAS
+- GCP_BUCKET_LISTAS_DE_ACUERDOS
+- GCP_BUCKET_SENTENCIAS
 - ORIGINS
 - RECAPTCHA_SITE_KEY
 - USERNAME
@@ -29,6 +34,11 @@ y cree como secretos las siguientes variable de entorno
 - pjecz_prometeo_db_pass
 - pjecz_prometeo_db_user
 - pjecz_prometeo_fernet_key
+- pjecz_prometeo_gcp_bucket
+- pjecz_prometeo_gcp_bucket_edictos
+- pjecz_prometeo_gcp_bucket_glosas
+- pjecz_prometeo_gcp_bucket_listas_de_acuerdos
+- pjecz_prometeo_gcp_bucket_sentencias
 - pjecz_prometeo_origins
 - pjecz_prometeo_recaptcha_site_key
 - pjecz_prometeo_username
@@ -80,6 +90,11 @@ class Settings(BaseSettings):
     db_pass: str = get_secret("db_pass")
     db_user: str = get_secret("db_user")
     fernet_key: str = get_secret("fernet_key")
+    gcp_bucket: str = get_secret("gcp_bucket")
+    gcp_bucket_edictos: str = get_secret("gcp_bucket_edictos")
+    gcp_bucket_glosas: str = get_secret("gcp_bucket_glosas")
+    gcp_bucket_listas_de_acuerdos: str = get_secret("gcp_bucket_listas_de_acuerdos")
+    gcp_bucket_sentencias: str = get_secret("gcp_bucket_sentencias")
     origins: str = get_secret("origins")
     recaptcha_site_key: str = get_secret("recaptcha_site_key")
     tz: str = "America/Mexico_City"
