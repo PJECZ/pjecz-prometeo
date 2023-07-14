@@ -118,7 +118,7 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo "   DB_NAME: ${DB_NAME}"
         echo "   DB_USER: ${DB_USER}"
         echo "   DB_PASS: ${DB_PASS}"
-        echo "   FERNET: ${FERNET}"
+        echo "   FERNET_KEY: ${FERNET_KEY}"
         echo "   GCP_BUCKET: ${GCP_BUCKET}"
         echo "   GCP_BUCKET_EDICTOS: ${GCP_BUCKET_EDICTOS}"
         echo "   GCP_BUCKET_GLOSAS: ${GCP_BUCKET_GLOSAS}"
