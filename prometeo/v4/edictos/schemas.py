@@ -3,7 +3,7 @@ Edictos v4, esquemas de pydantic
 """
 from datetime import date
 
-from pydantic import ConfigDict, BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 
