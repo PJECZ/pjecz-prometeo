@@ -7,7 +7,7 @@ For develpment you need the environment variable GOOGLE_APPLICATION_CREDENTIALS
 
 """
 from pathlib import Path
-from urllib.parse import urlparse, unquote
+from urllib.parse import unquote, urlparse
 
 from google.cloud import storage
 from google.cloud.exceptions import NotFound

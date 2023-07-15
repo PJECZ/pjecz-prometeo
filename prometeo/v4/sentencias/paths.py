@@ -5,7 +5,7 @@ from datetime import date
 from io import BytesIO
 from typing import Annotated
 
-from fastapi import APIRouter, Response, BackgroundTasks, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends, Response
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from config.settings import Settings, get_settings
@@ -17,7 +17,7 @@ from lib.google_cloud_storage import get_blob_name_from_url, get_file_from_gcs, 
 from lib.recaptcha_enterprise import create_assessment
 
 from .crud import get_sentencia, get_sentencias
-from .schemas import SentenciaOut, OneSentenciaOut
+from .schemas import OneSentenciaOut, SentenciaOut
 
 sentencias = APIRouter(prefix="/v4/sentencias", tags=["sentencias"])
 

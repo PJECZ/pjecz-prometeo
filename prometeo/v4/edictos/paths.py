@@ -5,7 +5,7 @@ from datetime import date
 from io import BytesIO
 from typing import Annotated
 
-from fastapi import APIRouter, Response, BackgroundTasks, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends, Response
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from config.settings import Settings, get_settings
@@ -16,7 +16,7 @@ from lib.fastapi_pagination_custom_page import CustomPage
 from lib.google_cloud_storage import get_blob_name_from_url, get_file_from_gcs, get_media_type_from_filename
 from lib.recaptcha_enterprise import create_assessment
 
-from .crud import get_edictos, get_edicto
+from .crud import get_edicto, get_edictos
 from .schemas import EdictoOut, OneEdictoOut
 
 edictos = APIRouter(prefix="/v4/edictos", tags=["edictos"])

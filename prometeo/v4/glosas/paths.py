@@ -5,7 +5,7 @@ from datetime import date
 from io import BytesIO
 from typing import Annotated
 
-from fastapi import APIRouter, Response, BackgroundTasks, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends, Response
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from config.settings import Settings, get_settings

@@ -4,7 +4,7 @@ Database
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import Engine, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
