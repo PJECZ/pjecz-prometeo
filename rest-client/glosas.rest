@@ -27,4 +27,3 @@ X-Api-Key: {{api_key}}
 ### Una glosa con id 13
 GET {{baseUrl}}/glosas/13
 X-Api-Key: {{api_key}}
-
