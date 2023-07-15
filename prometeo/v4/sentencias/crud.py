@@ -12,8 +12,8 @@ from lib.safe_string import safe_expediente
 from ...core.autoridades.models import Autoridad
 from ...core.sentencias.models import Sentencia
 from ..autoridades.crud import get_autoridad, get_autoridad_with_clave
-from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 from ..distritos.crud import get_distrito, get_distrito_with_clave
+from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 
 
 def get_sentencias(

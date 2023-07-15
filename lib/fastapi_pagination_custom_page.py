@@ -40,8 +40,8 @@ Usage:
         return paginate(query)
 
 """
-from typing import Any, Generic, Optional, Sequence, TypeVar
 from abc import ABC
+from typing import Any, Generic, Optional, Sequence, TypeVar
 
 from fastapi import Query
 from fastapi_pagination.bases import AbstractPage, AbstractParams

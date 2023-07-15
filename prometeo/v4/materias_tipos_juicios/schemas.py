@@ -3,7 +3,7 @@ Materias-Tipos de Juicios v4, esquemas de pydantic
 """
 from typing import List
 
-from pydantic import ConfigDict, BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from lib.schemas_base import OneBaseOut
 

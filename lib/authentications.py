@@ -1,11 +1,11 @@
 """
 Autentificaciones
 """
-from typing import Annotated
 import re
+from typing import Annotated
 
 from cryptography.fernet import Fernet
-from fastapi import HTTPException, Depends
+from fastapi import Depends, HTTPException
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 
