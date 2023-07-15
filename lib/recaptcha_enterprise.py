@@ -3,9 +3,14 @@ Validate reCAPTCHA Enterprise token
 
 Usage:
 
+    from lib.recaptcha_enterprise import create_assessment
+
     @app.get("/your-route")
-    async def your_route(token: str):
-        await validate_recaptcha(token)
+    async def your_route(
+        settings: Annotated[Settings, Depends(get_settings)],
+        token: str,
+    ):
+        await create_assessment(settings=settings, token=token)
         # Your code here
 
 """

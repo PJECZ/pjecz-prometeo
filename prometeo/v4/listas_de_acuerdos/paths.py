@@ -13,11 +13,8 @@ from lib.authentications import Usuario, get_current_user
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-from lib.google_cloud_storage import (
-    get_blob_name_from_url,
-    get_file_from_gcs,
-    get_media_type_from_filename,
-)
+from lib.google_cloud_storage import get_blob_name_from_url, get_file_from_gcs, get_media_type_from_filename
+from lib.recaptcha_enterprise import create_assessment
 
 from .crud import get_lista_de_acuerdo, get_listas_de_acuerdos
 from .schemas import ListaDeAcuerdoOut, OneListaDeAcuerdoOut
@@ -34,6 +31,32 @@ async def descargar_lista_de_acuerdo(
     lista_de_acuerdo_id: int,
 ):
     """Descargar de una lista de acuerdo a partir de su id"""
+    try:
+        lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
+        archivo_contenido = get_file_from_gcs(
+            bucket_name=settings.gcp_bucket_listas_de_acuerdos,
+            blob_name=get_blob_name_from_url(lista_de_acuerdo.url),
+        )
+        archivo_media_type = get_media_type_from_filename(lista_de_acuerdo.archivo)
+    except MyAnyError as error:
+        return OneListaDeAcuerdoOut(success=False, message=str(error))
+    buffer = BytesIO(archivo_contenido)
+    background_tasks.add_task(buffer.close)
+    headers = {"Content-Disposition": f'inline; filename="{lista_de_acuerdo.archivo}"'}
+    return Response(buffer.getvalue(), headers=headers, media_type=archivo_media_type)
+
+
+@listas_de_acuerdos.get("/recaptcha/{lista_de_acuerdo_id}")
+async def descargar_recaptcha_lista_de_acuerdo(
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[Usuario, Depends(get_current_user)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    background_tasks: BackgroundTasks,
+    lista_de_acuerdo_id: int,
+    token: str,
+):
+    """Descargar de una lista de acuerdo a partir de su id, validando reCAPTCHA"""
+    await create_assessment(settings=settings, token=token)
     try:
         lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
         archivo_contenido = get_file_from_gcs(

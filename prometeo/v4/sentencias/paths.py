@@ -13,11 +13,8 @@ from lib.authentications import Usuario, get_current_user
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
-from lib.google_cloud_storage import (
-    get_blob_name_from_url,
-    get_file_from_gcs,
-    get_media_type_from_filename,
-)
+from lib.google_cloud_storage import get_blob_name_from_url, get_file_from_gcs, get_media_type_from_filename
+from lib.recaptcha_enterprise import create_assessment
 
 from .crud import get_sentencia, get_sentencias
 from .schemas import OneSentenciaOut, SentenciaOut
@@ -34,6 +31,32 @@ async def descargar_sentencia(
     sentencia_id: int,
 ):
     """Descargar de una sentencia a partir de su id"""
+    try:
+        sentencia = get_sentencia(db, sentencia_id)
+        archivo_contenido = get_file_from_gcs(
+            bucket_name=settings.gcp_bucket_sentencias,
+            blob_name=get_blob_name_from_url(sentencia.url),
+        )
+        archivo_media_type = get_media_type_from_filename(sentencia.archivo)
+    except MyAnyError as error:
+        return OneSentenciaOut(success=False, message=str(error))
+    buffer = BytesIO(archivo_contenido)
+    background_tasks.add_task(buffer.close)
+    headers = {"Content-Disposition": f'inline; filename="{sentencia.archivo}"'}
+    return Response(buffer.getvalue(), headers=headers, media_type=archivo_media_type)
+
+
+@sentencias.get("/recaptcha/{sentencia_id}")
+async def descargar_recaptcha_sentencia(
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[Usuario, Depends(get_current_user)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    background_tasks: BackgroundTasks,
+    sentencia_id: int,
+    token: str,
+):
+    """Descargar de una sentencia a partir de su id, validando reCAPTCHA"""
+    await create_assessment(settings=settings, token=token)
     try:
         sentencia = get_sentencia(db, sentencia_id)
         archivo_contenido = get_file_from_gcs(
