@@ -28,36 +28,34 @@ Para producción vaya a Google Secret Manager en
 https://console.cloud.google.com/security/secret-manager
 y cree como secretos las siguientes variable de entorno
 
-- pjecz_prometeo_db_host
-- pjecz_prometeo_db_port
-- pjecz_prometeo_db_name
-- pjecz_prometeo_db_pass
-- pjecz_prometeo_db_user
-- pjecz_prometeo_fernet_key
-- pjecz_prometeo_gcp_bucket
-- pjecz_prometeo_gcp_bucket_edictos
-- pjecz_prometeo_gcp_bucket_glosas
-- pjecz_prometeo_gcp_bucket_listas_de_acuerdos
-- pjecz_prometeo_gcp_bucket_sentencias
-- pjecz_prometeo_origins
-- pjecz_prometeo_recaptcha_site_key
-- pjecz_prometeo_username
+- pjecz_prometeo_api_db_host
+- pjecz_prometeo_api_db_port
+- pjecz_prometeo_api_db_name
+- pjecz_prometeo_api_db_pass
+- pjecz_prometeo_api_db_user
+- pjecz_prometeo_api_fernet_key
+- pjecz_prometeo_api_gcp_bucket
+- pjecz_prometeo_api_gcp_bucket_edictos
+- pjecz_prometeo_api_gcp_bucket_glosas
+- pjecz_prometeo_api_gcp_bucket_listas_de_acuerdos
+- pjecz_prometeo_api_gcp_bucket_sentencias
+- pjecz_prometeo_api_origins
+- pjecz_prometeo_api_recaptcha_site_key
+- pjecz_prometeo_api_username
 
 Y en el archivo app.yaml agregue las siguientes variables de entorno
 
 - PROJECT_ID: justicia-digital-gob-mx
-- SERVICE_PREFIX: pjecz_prometeo
+- SERVICE_PREFIX: pjecz_prometeo_api
 """
 import os
 from functools import lru_cache
-from typing import Annotated
 
-from fastapi import Depends
 from google.cloud import secretmanager
 from pydantic_settings import BaseSettings
 
 PROJECT_ID = os.getenv("PROJECT_ID", "")  # Por defecto esta vacio, esto significa estamos en modo local
-SERVICE_PREFIX = os.getenv("SERVICE_PREFIX", "pjecz_prometeo")
+SERVICE_PREFIX = os.getenv("SERVICE_PREFIX", "pjecz_prometeo_api")
 
 
 def get_secret(secret_id: str) -> str:
