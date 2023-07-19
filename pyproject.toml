@@ -2,7 +2,7 @@
 name = "pjecz-prometeo"
 version = "1.0.0"
 description = "Entregar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI."
-authors = ["Guillermo Valdes <guillermo.valdes@pjecz.gob.mx>"]
+authors = ["Guillermo Valdes <guillermo@movimientolibre.com>"]
 license = "AGPL3"
 readme = "README.md"
 packages = [{include = "pjecz_prometeo"}]
@@ -31,9 +31,9 @@ uvicorn = "^0.22.0"
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
 isort = "^5.12.0"
+pre-commit = "^3.3.3"
 pylint = "^2.17.4"
 pylint-sqlalchemy = "^0.2.0"
-pre-commit = "^3.3.3"
 
 [build-system]
 requires = ["poetry-core"]

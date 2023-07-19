@@ -14,7 +14,7 @@ from ..materias.crud import get_materia, get_materia_with_clave
 
 
 def get_autoridades(
-    db: Session,
+    database: Session,
     distrito_id: int = None,
     distrito_clave: str = None,
     es_cemasc: bool = None,
@@ -26,12 +26,12 @@ def get_autoridades(
     materia_clave: str = None,
 ) -> Any:
     """Consultar los autoridades activos"""
-    consulta = db.query(Autoridad)
+    consulta = database.query(Autoridad)
     if distrito_id is not None:
-        distrito = get_distrito(db, distrito_id)
+        distrito = get_distrito(database, distrito_id)
         consulta = consulta.filter_by(distrito_id=distrito.id)
     elif distrito_clave is not None and distrito_clave != "":
-        distrito = get_distrito_with_clave(db, distrito_clave)
+        distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.filter_by(distrito_id=distrito.id)
     if es_cemasc is not None:
         consulta = consulta.filter_by(es_cemasc=es_cemasc)
@@ -44,17 +44,17 @@ def get_autoridades(
     if es_notaria is not None:
         consulta = consulta.filter_by(es_notaria=es_notaria)
     if materia_id is not None:
-        materia = get_materia(db, materia_id)
+        materia = get_materia(database, materia_id)
         consulta = consulta.filter_by(materia_id=materia.id)
     elif materia_clave is not None and materia_clave != "":
-        materia = get_materia_with_clave(db, materia_clave)
+        materia = get_materia_with_clave(database, materia_clave)
         consulta = consulta.filter_by(materia_id=materia.id)
     return consulta.filter_by(estatus="A").order_by(Autoridad.clave)
 
 
-def get_autoridad(db: Session, autoridad_id: int) -> Autoridad:
+def get_autoridad(database: Session, autoridad_id: int) -> Autoridad:
     """Consultar un autoridad por su id"""
-    autoridad = db.query(Autoridad).get(autoridad_id)
+    autoridad = database.query(Autoridad).get(autoridad_id)
     if autoridad is None:
         raise MyNotExistsError("No existe ese autoridad")
     if autoridad.estatus != "A":
@@ -62,13 +62,13 @@ def get_autoridad(db: Session, autoridad_id: int) -> Autoridad:
     return autoridad
 
 
-def get_autoridad_with_clave(db: Session, clave: str) -> Autoridad:
+def get_autoridad_with_clave(database: Session, clave: str) -> Autoridad:
     """Consultar un autoridad por su clave"""
     try:
         clave = safe_clave(clave)
     except ValueError as error:
         raise MyNotValidParamError(str(error)) from error
-    autoridad = db.query(Autoridad).filter_by(clave=clave).first()
+    autoridad = database.query(Autoridad).filter_by(clave=clave).first()
     if autoridad is None:
         raise MyNotExistsError("No existe ese autoridad")
     if autoridad.estatus != "A":

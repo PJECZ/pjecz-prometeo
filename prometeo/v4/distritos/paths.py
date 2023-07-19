@@ -19,7 +19,7 @@ distritos = APIRouter(prefix="/v4/distritos", tags=["distritos"])
 
 @distritos.get("", response_model=CustomList[DistritoOut])
 async def listado_distritos(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     es_distrito_judicial: bool = None,
     es_distrito: bool = None,
@@ -28,7 +28,7 @@ async def listado_distritos(
     """Listado de distritos"""
     try:
         query = get_distritos(
-            db=db,
+            database=database,
             es_distrito_judicial=es_distrito_judicial,
             es_distrito=es_distrito,
             es_jurisdiccional=es_jurisdiccional,
@@ -40,13 +40,13 @@ async def listado_distritos(
 
 @distritos.get("/{distrito_clave}", response_model=OneDistritoOut)
 async def detalle_distrito(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     distrito_clave: str,
 ):
     """Detalle de un distrito a partir de su clave"""
     try:
-        distrito = get_distrito_with_clave(db, distrito_clave)
+        distrito = get_distrito_with_clave(database, distrito_clave)
     except MyAnyError as error:
         return OneDistritoOut(success=False, message=str(error))
     return OneDistritoOut.model_validate(distrito)

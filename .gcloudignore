@@ -5,13 +5,11 @@
 .gitignore
 .DS_Store
 
+*.csv
 *.py[cod]
 *.sqlite3
+*.xlsx
 
-/poetry.lock
-/pyproject.toml
-
-*.egg-info/
 __pycache__/
 
 /.git

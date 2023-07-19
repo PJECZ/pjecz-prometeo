@@ -24,7 +24,7 @@ glosas = APIRouter(prefix="/v4/glosas", tags=["glosas"])
 
 @glosas.get("/descargar/{glosa_id}")
 async def descargar_glosa(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -32,7 +32,7 @@ async def descargar_glosa(
 ):
     """Descargar de una glosa a partir de su id"""
     try:
-        glosa = get_glosa(db, glosa_id)
+        glosa = get_glosa(database, glosa_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_glosas,
             blob_name=get_blob_name_from_url(glosa.url),
@@ -48,7 +48,7 @@ async def descargar_glosa(
 
 @glosas.get("/recaptcha/{glosa_id}")
 async def descargar_recaptcha_glosa(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -58,7 +58,7 @@ async def descargar_recaptcha_glosa(
     """Descargar de una glosa a partir de su id, validando reCAPTCHA"""
     await create_assessment(settings=settings, token=token)
     try:
-        glosa = get_glosa(db, glosa_id)
+        glosa = get_glosa(database, glosa_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_glosas,
             blob_name=get_blob_name_from_url(glosa.url),
@@ -74,13 +74,13 @@ async def descargar_recaptcha_glosa(
 
 @glosas.get("/{glosa_id}", response_model=OneGlosaOut)
 async def detalle_glosa(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     glosa_id: int,
 ):
     """Detalle de una glosa a partir de su id"""
     try:
-        glosa = get_glosa(db, glosa_id)
+        glosa = get_glosa(database, glosa_id)
     except MyAnyError as error:
         return OneGlosaOut(success=False, message=str(error))
     return OneGlosaOut.model_validate(glosa)
@@ -88,7 +88,7 @@ async def detalle_glosa(
 
 @glosas.get("", response_model=CustomPage[GlosaOut])
 async def listado_glosas(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -103,7 +103,7 @@ async def listado_glosas(
     """Listado de glosas"""
     try:
         query = get_glosas(
-            db=db,
+            database=database,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
             distrito_id=distrito_id,

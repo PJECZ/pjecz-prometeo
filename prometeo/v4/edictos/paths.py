@@ -24,7 +24,7 @@ edictos = APIRouter(prefix="/v4/edictos", tags=["edictos"])
 
 @edictos.get("/descargar/{edicto_id}")
 async def descargar_edicto(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -32,7 +32,7 @@ async def descargar_edicto(
 ):
     """Descargar de un edicto a partir de su id"""
     try:
-        edicto = get_edicto(db, edicto_id)
+        edicto = get_edicto(database, edicto_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_edictos,
             blob_name=get_blob_name_from_url(edicto.url),
@@ -48,7 +48,7 @@ async def descargar_edicto(
 
 @edictos.get("/recaptcha/{edicto_id}")
 async def descargar_recaptcha_edicto(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -58,7 +58,7 @@ async def descargar_recaptcha_edicto(
     """Descargar de un edicto a partir de su id, validando reCAPTCHA"""
     await create_assessment(settings=settings, token=token)
     try:
-        edicto = get_edicto(db, edicto_id)
+        edicto = get_edicto(database, edicto_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_edictos,
             blob_name=get_blob_name_from_url(edicto.url),
@@ -74,13 +74,13 @@ async def descargar_recaptcha_edicto(
 
 @edictos.get("/{edicto_id}", response_model=OneEdictoOut)
 async def detalle_edicto(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     edicto_id: int,
 ):
     """Detalle de un edicto a partir de su id"""
     try:
-        edicto = get_edicto(db, edicto_id)
+        edicto = get_edicto(database, edicto_id)
     except MyAnyError as error:
         return OneEdictoOut(success=False, message=str(error))
     return OneEdictoOut.model_validate(edicto)
@@ -88,7 +88,7 @@ async def detalle_edicto(
 
 @edictos.get("", response_model=CustomPage[EdictoOut])
 async def listado_edictos(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     anio: int = None,
     autoridad_id: int = None,
@@ -103,7 +103,7 @@ async def listado_edictos(
     """Listado de edictos"""
     try:
         query = get_edictos(
-            db=db,
+            database=database,
             anio=anio,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,

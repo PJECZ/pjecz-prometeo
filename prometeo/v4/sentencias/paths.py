@@ -24,7 +24,7 @@ sentencias = APIRouter(prefix="/v4/sentencias", tags=["sentencias"])
 
 @sentencias.get("/descargar/{sentencia_id}")
 async def descargar_sentencia(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -32,7 +32,7 @@ async def descargar_sentencia(
 ):
     """Descargar de una sentencia a partir de su id"""
     try:
-        sentencia = get_sentencia(db, sentencia_id)
+        sentencia = get_sentencia(database, sentencia_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_sentencias,
             blob_name=get_blob_name_from_url(sentencia.url),
@@ -48,7 +48,7 @@ async def descargar_sentencia(
 
 @sentencias.get("/recaptcha/{sentencia_id}")
 async def descargar_recaptcha_sentencia(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -58,7 +58,7 @@ async def descargar_recaptcha_sentencia(
     """Descargar de una sentencia a partir de su id, validando reCAPTCHA"""
     await create_assessment(settings=settings, token=token)
     try:
-        sentencia = get_sentencia(db, sentencia_id)
+        sentencia = get_sentencia(database, sentencia_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_sentencias,
             blob_name=get_blob_name_from_url(sentencia.url),
@@ -74,13 +74,13 @@ async def descargar_recaptcha_sentencia(
 
 @sentencias.get("/{sentencia_id}", response_model=OneSentenciaOut)
 async def detalle_sentencia(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     sentencia_id: int,
 ):
     """Detalle de una sentencia a partir de su id"""
     try:
-        sentencia = get_sentencia(db, sentencia_id)
+        sentencia = get_sentencia(database, sentencia_id)
     except MyAnyError as error:
         return OneSentenciaOut(success=False, message=str(error))
     return OneSentenciaOut.model_validate(sentencia)
@@ -88,7 +88,7 @@ async def detalle_sentencia(
 
 @sentencias.get("", response_model=CustomPage[SentenciaOut])
 async def listado_sentencias(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     anio: int = None,
     autoridad_id: int = None,
@@ -105,7 +105,7 @@ async def listado_sentencias(
     """Listado de sentencias"""
     try:
         query = get_sentencias(
-            db=db,
+            database=database,
             anio=anio,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,
