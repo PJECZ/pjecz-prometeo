@@ -17,7 +17,7 @@ from ..materias_tipos_juicios.crud import get_materia_tipo_juicio
 
 
 def get_sentencias(
-    db: Session,
+    database: Session,
     anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -31,18 +31,18 @@ def get_sentencias(
     sentencia: str = None,
 ) -> Any:
     """Consultar los sentencias activas"""
-    consulta = db.query(Sentencia)
+    consulta = database.query(Sentencia)
     if autoridad_id is not None:
-        autoridad = get_autoridad(db, autoridad_id)
+        autoridad = get_autoridad(database, autoridad_id)
         consulta = consulta.filter_by(autoridad_id=autoridad.id)
     elif autoridad_clave is not None and autoridad_clave != "":
-        autoridad = get_autoridad_with_clave(db, autoridad_clave)
+        autoridad = get_autoridad_with_clave(database, autoridad_clave)
         consulta = consulta.filter_by(autoridad_id=autoridad.id)
     elif distrito_id is not None:
-        distrito = get_distrito(db, distrito_id)
+        distrito = get_distrito(database, distrito_id)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
     elif distrito_clave is not None and distrito_clave != "":
-        distrito = get_distrito_with_clave(db, distrito_clave)
+        distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
     if anio is not None:
         desde = date(year=anio, month=1, day=1)
@@ -62,7 +62,7 @@ def get_sentencias(
             raise MyNotValidParamError("El expediente no es válido") from error
         consulta = consulta.filter_by(expediente=expediente)
     if materia_tipo_juicio_id is not None:
-        materia_tipo_juicio = get_materia_tipo_juicio(db, materia_tipo_juicio_id)
+        materia_tipo_juicio = get_materia_tipo_juicio(database, materia_tipo_juicio_id)
         consulta = consulta.filter_by(materia_tipo_juicio_id=materia_tipo_juicio.id)
     if sentencia is not None:
         try:
@@ -73,9 +73,9 @@ def get_sentencias(
     return consulta.filter_by(estatus="A").order_by(Sentencia.id.desc())
 
 
-def get_sentencia(db: Session, sentencia_id: int) -> Sentencia:
+def get_sentencia(database: Session, sentencia_id: int) -> Sentencia:
     """Consultar una sentencia por su id"""
-    sentencia = db.query(Sentencia).get(sentencia_id)
+    sentencia = database.query(Sentencia).get(sentencia_id)
     if sentencia is None:
         raise MyNotExistsError("No existe ese sentencia")
     if sentencia.estatus != "A":

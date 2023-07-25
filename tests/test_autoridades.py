@@ -20,6 +20,16 @@ class TestAutoridades(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_get_autoridades_with_page_and_size(self):
+        """Test GET method for autoridades with page 2 and size 5"""
+        response = requests.get(
+            f"{config['host']}/v4/autoridades",
+            headers={"X-Api-Key": config["api_key"]},
+            params={"page": 2, "size": 5},
+            timeout=config["timeout"],
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_get_autoridades_by_es_cemasc(self):
         """Test GET method for autoridades by es_cemasc"""
         response = requests.get(

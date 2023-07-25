@@ -19,7 +19,7 @@ autoridades = APIRouter(prefix="/v4/autoridades", tags=["autoridades"])
 
 @autoridades.get("", response_model=CustomList[AutoridadOut])
 async def listado_autoridades(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     distrito_id: int = None,
     distrito_clave: str = None,
@@ -34,7 +34,7 @@ async def listado_autoridades(
     """Listado de autoridades"""
     try:
         query = get_autoridades(
-            db=db,
+            database=database,
             distrito_id=distrito_id,
             distrito_clave=distrito_clave,
             es_cemasc=es_cemasc,
@@ -52,13 +52,13 @@ async def listado_autoridades(
 
 @autoridades.get("/{autoridad_clave}", response_model=OneAutoridadOut)
 async def detalle_autoridad(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     autoridad_clave: str,
 ):
     """Detalle de una autoridad a partir de su clave"""
     try:
-        autoridad = get_autoridad_with_clave(db, autoridad_clave)
+        autoridad = get_autoridad_with_clave(database, autoridad_clave)
     except MyAnyError as error:
         return OneAutoridadOut(success=False, message=str(error))
     return OneAutoridadOut.model_validate(autoridad)

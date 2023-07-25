@@ -16,7 +16,7 @@ from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_glosas(
-    db: Session,
+    database: Session,
     autoridad_id: int = None,
     autoridad_clave: str = None,
     distrito_id: int = None,
@@ -28,18 +28,18 @@ def get_glosas(
     fecha_hasta: date = None,
 ) -> Any:
     """Consultar los glosas activas"""
-    consulta = db.query(Glosa)
+    consulta = database.query(Glosa)
     if autoridad_id is not None:
-        autoridad = get_autoridad(db, autoridad_id)
+        autoridad = get_autoridad(database, autoridad_id)
         consulta = consulta.filter_by(autoridad_id=autoridad.id)
     elif autoridad_clave is not None and autoridad_clave != "":
-        autoridad = get_autoridad_with_clave(db, autoridad_clave)
+        autoridad = get_autoridad_with_clave(database, autoridad_clave)
         consulta = consulta.filter_by(autoridad_id=autoridad.id)
     elif distrito_id is not None:
-        distrito = get_distrito(db, distrito_id)
+        distrito = get_distrito(database, distrito_id)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
     elif distrito_clave is not None and distrito_clave != "":
-        distrito = get_distrito_with_clave(db, distrito_clave)
+        distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
     if expediente is not None:
         try:

@@ -24,7 +24,7 @@ listas_de_acuerdos = APIRouter(prefix="/v4/listas_de_acuerdos", tags=["listas de
 
 @listas_de_acuerdos.get("/descargar/{lista_de_acuerdo_id}")
 async def descargar_lista_de_acuerdo(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -32,7 +32,7 @@ async def descargar_lista_de_acuerdo(
 ):
     """Descargar de una lista de acuerdo a partir de su id"""
     try:
-        lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
+        lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_listas_de_acuerdos,
             blob_name=get_blob_name_from_url(lista_de_acuerdo.url),
@@ -48,7 +48,7 @@ async def descargar_lista_de_acuerdo(
 
 @listas_de_acuerdos.get("/recaptcha/{lista_de_acuerdo_id}")
 async def descargar_recaptcha_lista_de_acuerdo(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
@@ -58,7 +58,7 @@ async def descargar_recaptcha_lista_de_acuerdo(
     """Descargar de una lista de acuerdo a partir de su id, validando reCAPTCHA"""
     await create_assessment(settings=settings, token=token)
     try:
-        lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
+        lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
         archivo_contenido = get_file_from_gcs(
             bucket_name=settings.gcp_bucket_listas_de_acuerdos,
             blob_name=get_blob_name_from_url(lista_de_acuerdo.url),
@@ -74,13 +74,13 @@ async def descargar_recaptcha_lista_de_acuerdo(
 
 @listas_de_acuerdos.get("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
 async def detalle_lista_de_acuerdo(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     lista_de_acuerdo_id: int,
 ):
     """Detalle de una lista de acuerdo a partir de su id"""
     try:
-        lista_de_acuerdo = get_lista_de_acuerdo(db, lista_de_acuerdo_id)
+        lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
     except MyAnyError as error:
         return OneListaDeAcuerdoOut(success=False, message=str(error))
     return OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
@@ -88,7 +88,7 @@ async def detalle_lista_de_acuerdo(
 
 @listas_de_acuerdos.get("", response_model=CustomPage[ListaDeAcuerdoOut])
 async def listado_listas_de_acuerdos(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     anio: int = None,
     autoridad_id: int = None,
@@ -102,7 +102,7 @@ async def listado_listas_de_acuerdos(
     """Listado de listas de acuerdos"""
     try:
         query = get_listas_de_acuerdos(
-            db=db,
+            database=database,
             anio=anio,
             autoridad_id=autoridad_id,
             autoridad_clave=autoridad_clave,

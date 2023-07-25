@@ -11,14 +11,14 @@ from lib.safe_string import safe_clave
 from ...core.materias.models import Materia
 
 
-def get_materias(db: Session) -> Any:
+def get_materias(database: Session) -> Any:
     """Consultar las materias activas"""
-    return db.query(Materia).filter_by(estatus="A").order_by(Materia.id)
+    return database.query(Materia).filter_by(estatus="A").order_by(Materia.nombre)
 
 
-def get_materia(db: Session, materia_id: int) -> Materia:
+def get_materia(database: Session, materia_id: int) -> Materia:
     """Consultar una materia por su id"""
-    materia = db.query(Materia).get(materia_id)
+    materia = database.query(Materia).get(materia_id)
     if materia is None:
         raise MyNotExistsError("No existe ese materia")
     if materia.estatus != "A":
@@ -26,13 +26,13 @@ def get_materia(db: Session, materia_id: int) -> Materia:
     return materia
 
 
-def get_materia_with_clave(db: Session, clave: str) -> Materia:
+def get_materia_with_clave(database: Session, clave: str) -> Materia:
     """Consultar una materia por su clave"""
     try:
         clave = safe_clave(clave)
     except ValueError as error:
         raise MyNotValidParamError(str(error)) from error
-    materia = db.query(Materia).filter_by(clave=clave).first()
+    materia = database.query(Materia).filter_by(clave=clave).first()
     if materia is None:
         raise MyNotExistsError("No existe ese materia")
     if materia.estatus != "A":

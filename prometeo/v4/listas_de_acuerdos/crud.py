@@ -15,7 +15,7 @@ from ..distritos.crud import get_distrito, get_distrito_with_clave
 
 
 def get_listas_de_acuerdos(
-    db: Session,
+    database: Session,
     anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -26,18 +26,18 @@ def get_listas_de_acuerdos(
     fecha_hasta: date = None,
 ) -> Any:
     """Consultar las listas de acuerdos activas"""
-    consulta = db.query(ListaDeAcuerdo)
+    consulta = database.query(ListaDeAcuerdo)
     if autoridad_id is not None:
-        autoridad = get_autoridad(db, autoridad_id)
+        autoridad = get_autoridad(database, autoridad_id)
         consulta = consulta.filter_by(autoridad_id=autoridad.id)
     elif autoridad_clave is not None and autoridad_clave != "":
-        autoridad = get_autoridad_with_clave(db, autoridad_clave)
+        autoridad = get_autoridad_with_clave(database, autoridad_clave)
         consulta = consulta.filter_by(autoridad_id=autoridad.id)
     elif distrito_id is not None:
-        distrito = get_distrito(db, distrito_id)
+        distrito = get_distrito(database, distrito_id)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
     elif distrito_clave is not None and distrito_clave != "":
-        distrito = get_distrito_with_clave(db, distrito_clave)
+        distrito = get_distrito_with_clave(database, distrito_clave)
         consulta = consulta.join(Autoridad).filter(Autoridad.distrito_id == distrito.id)
     if anio is not None:
         desde = date(year=anio, month=1, day=1)
@@ -53,9 +53,9 @@ def get_listas_de_acuerdos(
     return consulta.filter_by(estatus="A").order_by(ListaDeAcuerdo.id.desc())
 
 
-def get_lista_de_acuerdo(db: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerdo:
+def get_lista_de_acuerdo(database: Session, lista_de_acuerdo_id: int) -> ListaDeAcuerdo:
     """Consultar una lista de acuerdo por su id"""
-    lista_de_acuerdo = db.query(ListaDeAcuerdo).get(lista_de_acuerdo_id)
+    lista_de_acuerdo = database.query(ListaDeAcuerdo).get(lista_de_acuerdo_id)
     if lista_de_acuerdo is None:
         raise MyNotExistsError("No existe esa lista de acuerdo")
     if lista_de_acuerdo.estatus != "A":

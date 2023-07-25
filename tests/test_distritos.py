@@ -20,6 +20,16 @@ class TestDistritos(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_get_distritos_with_page_and_size(self):
+        """Test GET method for distritos with page 2 and size 5"""
+        response = requests.get(
+            f"{config['host']}/v4/distritos",
+            headers={"X-Api-Key": config["api_key"]},
+            params={"page": 2, "size": 5},
+            timeout=config["timeout"],
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_get_distritos_by_es_distrito_judicial(self):
         """Test GET method for distritos by es_distrito_judicial"""
         response = requests.get(

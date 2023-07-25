@@ -12,13 +12,13 @@ from ...core.distritos.models import Distrito
 
 
 def get_distritos(
-    db: Session,
+    database: Session,
     es_distrito_judicial: bool = None,
     es_distrito: bool = None,
     es_jurisdiccional: bool = None,
 ) -> Any:
     """Consultar los distritos activos"""
-    consulta = db.query(Distrito)
+    consulta = database.query(Distrito)
     if es_distrito_judicial is not None:
         consulta = consulta.filter_by(es_distrito_judicial=es_distrito_judicial)
     if es_distrito is not None:
@@ -28,9 +28,9 @@ def get_distritos(
     return consulta.filter_by(estatus="A").order_by(Distrito.clave)
 
 
-def get_distrito(db: Session, distrito_id: int) -> Distrito:
+def get_distrito(database: Session, distrito_id: int) -> Distrito:
     """Consultar un distrito por su id"""
-    distrito = db.query(Distrito).get(distrito_id)
+    distrito = database.query(Distrito).get(distrito_id)
     if distrito is None:
         raise MyNotExistsError("No existe ese distrito")
     if distrito.estatus != "A":
@@ -38,13 +38,13 @@ def get_distrito(db: Session, distrito_id: int) -> Distrito:
     return distrito
 
 
-def get_distrito_with_clave(db: Session, clave: str) -> Distrito:
+def get_distrito_with_clave(database: Session, clave: str) -> Distrito:
     """Consultar un distrito por su clave"""
     try:
         clave = safe_clave(clave)
     except ValueError as error:
         raise MyNotValidParamError(str(error)) from error
-    distrito = db.query(Distrito).filter_by(clave=clave).first()
+    distrito = database.query(Distrito).filter_by(clave=clave).first()
     if distrito is None:
         raise MyNotExistsError("No existe ese distrito")
     if distrito.estatus != "A":

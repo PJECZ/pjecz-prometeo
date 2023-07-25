@@ -19,12 +19,12 @@ materias = APIRouter(prefix="/v4/materias", tags=["materias"])
 
 @materias.get("", response_model=CustomList[MateriaOut])
 async def listado_materias(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
 ):
     """Listado de materias"""
     try:
-        query = get_materias(db)
+        query = get_materias(database)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(query)
@@ -32,13 +32,13 @@ async def listado_materias(
 
 @materias.get("/{materia_clave}", response_model=OneMateriaOut)
 async def detalle_materia(
-    db: Annotated[Session, Depends(get_db)],
+    database: Annotated[Session, Depends(get_db)],
     current_user: Annotated[Usuario, Depends(get_current_user)],
     materia_clave: str,
 ):
     """Detalle de una materia a partir de su id"""
     try:
-        materia = get_materia_with_clave(db, materia_clave)
+        materia = get_materia_with_clave(database, materia_clave)
     except MyAnyError as error:
         return OneMateriaOut(success=False, message=str(error))
     return OneMateriaOut.model_validate(materia)
