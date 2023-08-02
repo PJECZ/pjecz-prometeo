@@ -22,6 +22,7 @@ con las siguientes variables:
 - GCP_BUCKET_SENTENCIAS
 - ORIGINS
 - RECAPTCHA_SITE_KEY
+- USERDEV
 - USERNAME
 
 Para producción vaya a Google Secret Manager en
@@ -41,6 +42,7 @@ y cree como secretos las siguientes variable de entorno
 - pjecz_prometeo_api_gcp_bucket_sentencias
 - pjecz_prometeo_api_origins
 - pjecz_prometeo_api_recaptcha_site_key
+- pjecz_prometeo_api_userdev
 - pjecz_prometeo_api_username
 
 Y en el archivo app.yaml agregue las siguientes variables de entorno
@@ -96,6 +98,7 @@ class Settings(BaseSettings):
     origins: str = get_secret("origins")
     recaptcha_site_key: str = get_secret("recaptcha_site_key")
     tz: str = "America/Mexico_City"
+    userdev: str = get_secret("userdev")
     username: str = get_secret("username")
 
     class Config:
