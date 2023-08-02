@@ -9,7 +9,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Response
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from config.settings import Settings, get_settings
-from lib.authentications import Usuario, get_current_user
+from lib.authentications import Usuario, get_current_userdev, get_current_username
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
@@ -25,7 +25,7 @@ edictos = APIRouter(prefix="/v4/edictos", tags=["edictos"])
 @edictos.get("/descargar/{edicto_id}")
 async def descargar_edicto(
     database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
+    current_user: Annotated[Usuario, Depends(get_current_userdev)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
     edicto_id: int,
@@ -49,7 +49,7 @@ async def descargar_edicto(
 @edictos.get("/recaptcha/{edicto_id}")
 async def descargar_recaptcha_edicto(
     database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
+    current_user: Annotated[Usuario, Depends(get_current_username)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
     edicto_id: int,
@@ -72,24 +72,10 @@ async def descargar_recaptcha_edicto(
     return Response(buffer.getvalue(), headers=headers, media_type=archivo_media_type)
 
 
-@edictos.get("/{edicto_id}", response_model=OneEdictoOut)
-async def detalle_edicto(
-    database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
-    edicto_id: int,
-):
-    """Detalle de un edicto a partir de su id"""
-    try:
-        edicto = get_edicto(database, edicto_id)
-    except MyAnyError as error:
-        return OneEdictoOut(success=False, message=str(error))
-    return OneEdictoOut.model_validate(edicto)
-
-
-@edictos.get("", response_model=CustomPage[EdictoOut])
+@edictos.get("/paginado", response_model=CustomPage[EdictoOut])
 async def listado_edictos(
     database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
+    current_user: Annotated[Usuario, Depends(get_current_userdev)],
     anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -117,3 +103,17 @@ async def listado_edictos(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(query)
+
+
+@edictos.get("/{edicto_id}", response_model=OneEdictoOut)
+async def detalle_edicto(
+    database: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[Usuario, Depends(get_current_username)],
+    edicto_id: int,
+):
+    """Detalle de un edicto a partir de su id"""
+    try:
+        edicto = get_edicto(database, edicto_id)
+    except MyAnyError as error:
+        return OneEdictoOut(success=False, message=str(error))
+    return OneEdictoOut.model_validate(edicto)

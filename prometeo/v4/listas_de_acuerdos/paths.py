@@ -9,7 +9,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Response
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 from config.settings import Settings, get_settings
-from lib.authentications import Usuario, get_current_user
+from lib.authentications import Usuario, get_current_userdev, get_current_username
 from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
@@ -25,7 +25,7 @@ listas_de_acuerdos = APIRouter(prefix="/v4/listas_de_acuerdos", tags=["listas de
 @listas_de_acuerdos.get("/descargar/{lista_de_acuerdo_id}")
 async def descargar_lista_de_acuerdo(
     database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
+    current_user: Annotated[Usuario, Depends(get_current_userdev)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
     lista_de_acuerdo_id: int,
@@ -49,7 +49,7 @@ async def descargar_lista_de_acuerdo(
 @listas_de_acuerdos.get("/recaptcha/{lista_de_acuerdo_id}")
 async def descargar_recaptcha_lista_de_acuerdo(
     database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
+    current_user: Annotated[Usuario, Depends(get_current_username)],
     settings: Annotated[Settings, Depends(get_settings)],
     background_tasks: BackgroundTasks,
     lista_de_acuerdo_id: int,
@@ -72,24 +72,10 @@ async def descargar_recaptcha_lista_de_acuerdo(
     return Response(buffer.getvalue(), headers=headers, media_type=archivo_media_type)
 
 
-@listas_de_acuerdos.get("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
-async def detalle_lista_de_acuerdo(
-    database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
-    lista_de_acuerdo_id: int,
-):
-    """Detalle de una lista de acuerdo a partir de su id"""
-    try:
-        lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
-    except MyAnyError as error:
-        return OneListaDeAcuerdoOut(success=False, message=str(error))
-    return OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)
-
-
-@listas_de_acuerdos.get("", response_model=CustomPage[ListaDeAcuerdoOut])
+@listas_de_acuerdos.get("/paginado", response_model=CustomPage[ListaDeAcuerdoOut])
 async def listado_listas_de_acuerdos(
     database: Annotated[Session, Depends(get_db)],
-    current_user: Annotated[Usuario, Depends(get_current_user)],
+    current_user: Annotated[Usuario, Depends(get_current_userdev)],
     anio: int = None,
     autoridad_id: int = None,
     autoridad_clave: str = None,
@@ -115,3 +101,17 @@ async def listado_listas_de_acuerdos(
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(query)
+
+
+@listas_de_acuerdos.get("/{lista_de_acuerdo_id}", response_model=OneListaDeAcuerdoOut)
+async def detalle_lista_de_acuerdo(
+    database: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[Usuario, Depends(get_current_username)],
+    lista_de_acuerdo_id: int,
+):
+    """Detalle de una lista de acuerdo a partir de su id"""
+    try:
+        lista_de_acuerdo = get_lista_de_acuerdo(database, lista_de_acuerdo_id)
+    except MyAnyError as error:
+        return OneListaDeAcuerdoOut(success=False, message=str(error))
+    return OneListaDeAcuerdoOut.model_validate(lista_de_acuerdo)

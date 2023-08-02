@@ -23,8 +23,8 @@ def create_app() -> FastAPI:
     # FastAPI
     app = FastAPI(
         title="PJECZ Prometeo",
-        description="Bienvenido a PJECZ Prometeo.",
-        docs_url="/docs",
+        description="API que brinda los archivos públicos al sitio web pjecz.gob.mx.",
+        docs_url=None,
         redoc_url=None,
     )
 
@@ -55,7 +55,7 @@ def create_app() -> FastAPI:
     @app.get("/")
     async def root():
         """Mensaje de Bienvenida"""
-        return {"message": "Bienvenido a PJECZ Prometeo."}
+        return {"message": "API que brinda los archivos públicos al sitio web pjecz.gob.mx."}
 
     # Entregar
     return app
