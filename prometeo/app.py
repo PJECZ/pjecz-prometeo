@@ -58,6 +58,7 @@ def create_app() -> FastAPI:
         """Mensaje de Bienvenida"""
         return {"message": "API que brinda los archivos públicos al sitio web pjecz.gob.mx."}
 
+    # robots.txt
     @app.get("/robots.txt", response_class=PlainTextResponse)
     async def robots():
         """robots.txt to disallow all agents"""
