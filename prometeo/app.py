@@ -3,7 +3,6 @@ PJECZ Prometeo
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
 from fastapi_pagination import add_pagination
 
 from config.settings import get_settings
@@ -35,7 +34,7 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=settings.origins.split(","),
         allow_credentials=False,
-        allow_methods=["GET", "POST"],
+        allow_methods=["GET"],
         allow_headers=["*"],
     )
 
@@ -58,11 +57,12 @@ def create_app() -> FastAPI:
         """Mensaje de Bienvenida"""
         return {"message": "API que brinda los archivos públicos al sitio web pjecz.gob.mx."}
 
+    # from fastapi.responses import PlainTextResponse
     # Entregar robots.txt
-    @app.get("/robots.txt", response_class=PlainTextResponse)
-    async def robots():
-        """robots.txt to disallow all agents"""
-        return """User-agent: *\nDisallow: /"""
+    # @app.get("/robots.txt", response_class=PlainTextResponse)
+    # async def robots():
+    #     """robots.txt to disallow all agents"""
+    #     return """User-agent: *\nDisallow: /"""
 
     # Entregar
     return app
