@@ -58,7 +58,7 @@ async def create_assessment(
     response = client.create_assessment(request=request)
 
     # Check if the token is valid and the risk score
-    if response.token_properties.valid and response.token_properties.action == "LOGIN" and response.risk_analysis.score >= SCORE:
+    if response.token_properties.valid and response.risk_analysis.score >= SCORE:
         return response
 
     # Else, raise an exception
