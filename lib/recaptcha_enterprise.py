@@ -53,11 +53,14 @@ async def create_assessment(
     request.parent = project_name
 
     # Call API
-    response = client.create_assessment(request=request)
+    try:
+        response = client.create_assessment(request=request)
+    except Exception as error:
+        raise HTTPException(status_code=403, detail=f"Invalid reCAPTCHA {str(error)}") from error
 
     # Check if the token is valid and the risk score
-    if response.token_properties.valid and response.risk_analysis.score >= 0.5:
+    if response.token_properties.valid and response.risk_analysis.score >= 0.7:
         return response
 
     # Else, raise an exception
-    raise HTTPException(status_code=400, detail="Invalid reCAPTCHA token")
+    raise HTTPException(status_code=403, detail="Invalid reCAPTCHA token")
