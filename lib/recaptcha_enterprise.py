@@ -22,6 +22,8 @@ from google.cloud.recaptchaenterprise_v1 import Assessment
 
 from config.settings import PROJECT_ID, Settings, get_settings
 
+SCORE = 0.7
+
 
 async def create_assessment(
     settings: Annotated[Settings, Depends(get_settings)],
@@ -56,8 +58,8 @@ async def create_assessment(
     response = client.create_assessment(request=request)
 
     # Check if the token is valid and the risk score
-    if response.token_properties.valid and response.risk_analysis.score >= 0.5:
+    if response.token_properties.valid and response.token_properties.action == "DOWNLOAD" and response.risk_analysis.score >= SCORE:
         return response
 
     # Else, raise an exception
-    raise HTTPException(status_code=400, detail="Invalid reCAPTCHA token")
+    raise HTTPException(status_code=403, detail="Invalid reCAPTCHA token")
