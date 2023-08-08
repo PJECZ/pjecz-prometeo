@@ -22,7 +22,7 @@ from google.cloud.recaptchaenterprise_v1 import Assessment
 
 from config.settings import PROJECT_ID, Settings, get_settings
 
-SCORE = 0.7
+SCORE = 0.5
 
 
 async def create_assessment(
