@@ -1,11 +1,10 @@
 [tool.poetry]
 name = "pjecz-prometeo"
 version = "1.0.0"
-description = "Entregar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI."
+description = "API para descargar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI."
 authors = ["Guillermo Valdes <guillermo@movimientolibre.com>"]
 license = "AGPL3"
 readme = "README.md"
-packages = [{include = "pjecz_prometeo"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -27,6 +26,7 @@ sqlalchemy = "^2.0.18"
 sqlalchemy-utils = "^0.41.1"
 unidecode = "^1.3.6"
 uvicorn = "^0.22.0"
+
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"

@@ -24,7 +24,7 @@ def create_app() -> FastAPI:
     # FastAPI
     app = FastAPI(
         title="PJECZ Prometeo",
-        description="API que brinda los archivos públicos al sitio web pjecz.gob.mx.",
+        description="API para descargar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI.",
         docs_url=None,
         redoc_url=None,
     )
@@ -56,7 +56,7 @@ def create_app() -> FastAPI:
     @app.get("/")
     async def root():
         """Mensaje de Bienvenida"""
-        return {"message": "API que brinda los archivos públicos al sitio web pjecz.gob.mx."}
+        return {"message": "API para descargar archivos almacenados en depósitos que no son públicos. Hecho con FastAPI."}
 
     # Entregar robots.txt
     @app.get("/robots.txt", response_class=PlainTextResponse)
